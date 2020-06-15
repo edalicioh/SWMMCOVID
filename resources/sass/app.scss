@@ -1,0 +1,87 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
+@import url('https://unpkg.com/leaflet@1.6.0/dist/leaflet.css');
+
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+#mapid {
+    height: 100vh
+}
+
+label.required::after {
+    content: " *" !important;
+    color: red !important;
+}
+
+#load {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    z-index: 100000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#info-box {
+    position: absolute;
+    top: 10%;
+    left: calc(1rem + 15px);
+    background: #e9ecef;
+    z-index: 1000;
+    width: 85%;
+    display: none;
+    transition: ease-in-out 1.3s;
+
+}
+
+
+#virus-load {
+    font-size: 10rem;
+    color: #145006;
+    animation: rotate 2.5s linear infinite;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+#menu-info {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    #menu-info {
+        display: none;
+    }
+
+    #info-box {
+        display: block;
+        width: 25%;
+    }
+}
+
+
+.nav-link.dropdown-toggle.btn:hover{
+    color: white !important;
+}
+
+.nav-link.dropdown-toggle.btn:active{
+    color: white !important;
+}
+
+.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+    color: white !important;
+}
