@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Http\Requests\StoreUpdade;
+use App\Models\District;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,8 +29,9 @@ class AddressController extends Controller
     {
         $cities = DB::table('cities')->get();
         $states = DB::table('states')->get();
+        $district = District::all();
 
-        return view('dashboard/pages/address/create' , compact(['cities' , 'states']));
+        return view('dashboard/pages/address/create' , compact(['cities' , 'states' ,'district']));
     }
 
     /**

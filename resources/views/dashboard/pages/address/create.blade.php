@@ -18,6 +18,9 @@
         @include('dashboard.pages.address.components._fromDistrict')
     </div>
 </div>
+<div class="row">
+        @include('dashboard.pages.address.components._table')
+</div>
 @stop
 
 

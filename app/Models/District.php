@@ -16,4 +16,9 @@ class District extends Model
     protected $fillable = [
         'name', 'central_position'
     ];
+
+    public function city()
+    {
+        return $this->belongsTo('App\Models\City');
+    }
 }
