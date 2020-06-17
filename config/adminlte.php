@@ -249,8 +249,14 @@ return [
             'url'  => '/admin/question',
             'icon'    => 'fas fa-fw fa-question mr-2',
         ],
+        ['header' => 'Locais de Coleta'],
+        [
+            'text' => 'Novo Local',
+            'url'  => '/admin/collection/create',
+            'icon'    => 'fas fa-fw fa-syringe mr-2',
+        ],
 
-        ['header' => 'Novos Locais'],
+        ['header' => 'Novo Ponto'],
         [
             'text' => 'Adicionar',
             'url'  => 'admin/address/create',

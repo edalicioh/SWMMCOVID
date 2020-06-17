@@ -1,11 +1,8 @@
 <form id="form-model-company" >
     @csrf
     <div class="row">
-        <div class="col-md-6">
-            @include('dashboard.pages.person.components._formCompanies')
-        </div>
-        <div class="col-md-6">
-            @include('dashboard.pages.person.components._formAddress')
+        <div class="col-md-12">
+            @include('dashboard.pages.person.components._formProfession')
         </div>
     </div>
     <div class="row  pb-3 text-right">

@@ -19,7 +19,7 @@
     </div>
 
       <div class="form-group">
-        <label for="possible_location" class="required">Local da Possível</label>
+        <label for="possible_location" class="required">Local da Possível Contaminação</label>
         <select class="text-uppercase form-control {{ $errors->has('possible_location') ? 'is-invalid' : '' }}" id="possible_location" name="possible_location">
             <option  value="" disabled selected >Escolha</option>
                 @foreach (Config::get( 'constants.POSSIBLE_LOCATION' ) as $key => $location )
@@ -30,6 +30,7 @@
                 }}
                 value="{{$key}}">{{$location}}</option>
                 @endforeach
+                <option value="não informado" >não informado</option>
             </select>
             @if ($errors->has('possible_location'))
             <div class="invalid-feedback">

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CollectionLocation;
-use App\Models\State;
+use App\Models\Profession;
 use Illuminate\Http\Request;
 
-class CollectionLocationController extends Controller
+class ProfessionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,8 +24,7 @@ class CollectionLocationController extends Controller
      */
     public function create()
     {
-        $states = State::all();
-        return view('dashboard/pages/collection/create', compact('states'));
+        //
     }
 
     /**
@@ -37,22 +35,17 @@ class CollectionLocationController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $request->address_id = (new AddressController())->store($request);
-            CollectionLocation::create($request->all());
-            return CollectionLocation::all();
-        } catch (\Exception $e) {
-           return false;
-        }
+        Profession::create($request->all());
+        return Profession::all();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CollectionLocation  $collectionLocation
+     * @param  \App\Models\Profession  $profession
      * @return \Illuminate\Http\Response
      */
-    public function show(CollectionLocation $collectionLocation)
+    public function show(Profession $profession)
     {
         //
     }
@@ -60,10 +53,10 @@ class CollectionLocationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CollectionLocation  $collectionLocation
+     * @param  \App\Models\Profession  $profession
      * @return \Illuminate\Http\Response
      */
-    public function edit(CollectionLocation $collectionLocation)
+    public function edit(Profession $profession)
     {
         //
     }
@@ -72,10 +65,10 @@ class CollectionLocationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CollectionLocation  $collectionLocation
+     * @param  \App\Models\Profession  $profession
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CollectionLocation $collectionLocation)
+    public function update(Request $request, Profession $profession)
     {
         //
     }
@@ -83,10 +76,10 @@ class CollectionLocationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CollectionLocation  $collectionLocation
+     * @param  \App\Models\Profession  $profession
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CollectionLocation $collectionLocation)
+    public function destroy(Profession $profession)
     {
         //
     }

@@ -51,7 +51,7 @@
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-xl" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Novo Local</h5>
@@ -66,21 +66,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="localColetaModal" tabindex="-1" role="dialog" aria-labelledby="localColetaModalLabel" aria-hidden="true">
-    <div class="modal-dialog " role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="localColetaModalLabel">Novo Local Coleta</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            @include('dashboard.pages.person.components._formModalCollection')
-        </div>
-      </div>
-    </div>
-  </div>
+
 
 
 @stop
@@ -183,29 +169,22 @@ form.addEventListener('submit', e => {
     e.preventDefault()
     const data = {
 
-       'street' : form.elements.street.value,
-       'number' : form.elements.number.value,
-       'observation' : form.elements.observation.value,
-       'state_id' : form.elements.state_id.value,
-       'city_id' : form.elements.city.value,
-       'district_id' : form.elements.district_id.value,
-
-       'company_name' : form.elements.company_name.value,
-       'cnpj' : form.elements.cnpj.value,
-       'company_type' : form.elements.company_type.value,
+       'professions_description' : form.elements.professions_description.value,
 
     }
 
-    axios.post('{{ route('company.store') }}' , data)
+    axios.post('{{ route('profession.store') }}' , data)
     .then(response => {
+        console.log(response);
+
         if ( response.data ) {
-            let html = '<option value="" disabled selected >Escolha Local</option>'
+            let html = '<option value="" disabled selected >Escolha</option>'
 
             response.data.map(elem => {
-                html += `<option value="${elem.id}">${elem.company_name} / ${elem.cnpj} </option>`
+                html += `<option value="${elem.id}">${elem.professions_description}</option>`
             })
-
-            document.getElementById('companies').innerHTML = html
+            html += '<option value="não informado" >não informado</option>'
+            document.getElementById('professions_description').innerHTML = html
             $('#exampleModal').modal('hide')
         }
     })
@@ -251,37 +230,6 @@ $('.city').change( (e) => {
 
 })
 
-const formExam = document.getElementById('form-model-exam')
-
-formExam.addEventListener('submit', e => {
-    e.preventDefault()
-    const data = {
-
-       'street' : formExam.elements.street.value,
-       'number' : formExam.elements.number.value,
-       'observation' : formExam.elements.observation.value,
-       'state_id' : formExam.elements.state_id.value,
-       'city_id' : formExam.elements.city.value,
-       'district_id' : formExam.elements.district_id.value,
-
-       'name_location' : formExam.elements.name_location.value,
-       'type_location' : formExam.elements.type_location.value,
-
-    }
-
-    axios.post('{{ route('collection.store') }}' , data)
-    .then(response => {
-        if ( response.data ) {
-            let html = '<option value="" disabled selected >Escolha Local</option>'
-
-            response.data.map(elem => {
-                html += `<option value="${elem.id}">${elem.name_location}</option>`
-            })
-            document.getElementById('exam_id').innerHTML = html
-            $('#localColetaModal').modal('hide')
-        }
-    })
-})
 
 
 </script>

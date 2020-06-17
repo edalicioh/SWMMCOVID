@@ -17,6 +17,7 @@ use App\Models\CollectionLocation;
 use App\Models\Company;
 use App\Models\Exam;
 use App\Models\Hospital;
+use App\Models\Profession;
 
 class PersonController extends Controller
 {
@@ -75,6 +76,7 @@ class PersonController extends Controller
         $diseases   = Disease::get();
         $hospitais  = Hospital::get();
         $companies  = Company::get();
+        $professions = Profession::all();
         $exams      = CollectionLocation::get();
 
 
@@ -89,7 +91,8 @@ class PersonController extends Controller
                 'diseases',
                 'hospitais',
                 'companies',
-                'exams'
+                'exams',
+                'professions'
             ])
         );
     }
@@ -177,11 +180,10 @@ class PersonController extends Controller
             ->first();
 
         $attendances = $person->attendances()
-            ->leftJoin('attendence_symptom', 'attendences.id', 'attendence_symptom.attendence_id')
-            ->leftJoin('symptoms', 'attendence_symptom.symptom_id', 'symptoms.id')
-            ->select('date', 'annotations', 'attendence_id', 'description', 'exam')
+            ->leftJoin('attendance_symptom', 'attendances.id', 'attendance_symptom.attendance_id')
+            ->leftJoin('symptoms', 'attendance_symptom.symptom_id', 'symptoms.id')
             ->get()
-            ->groupBy(['attendence_id']);
+            ->groupBy(['attendance_id']);
 
         foreach ($attendances as $Akey => $attendance) {
             $descricao = [];
@@ -192,7 +194,7 @@ class PersonController extends Controller
             $attendances[$Akey] = [
                 'date'          => $attendance[0]->date,
                 'annotations'   => $attendance[0]->annotations,
-                'attendence_id' => $attendance[0]->attendence_id,
+                'attendance_id' => $attendance[0]->attendance_id,
                 'exam'          => $attendance[0]->exam,
                 'symptoms' => implode(', ', $descricao)
             ];

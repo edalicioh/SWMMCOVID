@@ -23,16 +23,17 @@
       @endif
       </div>
       <div class="form-group" >
-        <label for="companies" class="required">Empresa Nome / CNPJ</label>
-        <select class="form-control" id="companies" name="company_id">
+        <label for="professions_description" class="required">Profissão</label>
+        <select class="form-control" id="professions_description" name="profession_id">
             <option value="" disabled selected >Escolha</option>
-            @foreach ($companies as $company)
-                <option value="{{$company->id}}">{{$company->company_name}} / {{$company->cnpj}}</option>
+            @foreach ($professions as $profession)
+                <option value="{{$profession->id}}">{{$profession->professions_description}}</option>
             @endforeach
+            <option value="não informado" >não informado</option>
         </select>
       </div>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-       Nova empresa
+       Nova profissão
     </button>
     </div>
 </div>

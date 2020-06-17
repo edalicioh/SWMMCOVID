@@ -38,7 +38,7 @@ $('#people-table').DataTable({
                 let show = '{{ url("admin/historic/person") }}'
                 let create = '{{ url("admin/attendance/person/create") }}'
 
-                edit = edit.replace('id', row.person_id);
+                edit = edit.replace('/id/', '/'+row.person_id+'/');
                 show = show.replace('person', row.person_id);
                 create = create.replace('person', row.person_id);
 

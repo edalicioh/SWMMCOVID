@@ -47,7 +47,7 @@
                         <ul class="list-group list-group-flush " id="info-list"></ul>
                     </div>
                     <a href="http://www.camboriu.ifc.edu.br/autoprotecao-social/">
-                        <img src="{{ asset('public/img/Banner-autoproteção-social.png') }}"  class="card-img-top" >
+                        <img src="{{ asset('public/img/banner-social.png') }}"  class="card-img-top" >
                     </a>
                 </div>
             </div>

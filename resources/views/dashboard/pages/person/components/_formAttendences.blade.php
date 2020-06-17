@@ -14,11 +14,6 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#localColetaModal">
-                        Novo Local
-                    </button>
-                </div>
-                <div class="form-group">
                     <label for="collection_date">Data Coleta</label>
                     <input type="text"
                         class="form-control date-time-hour"

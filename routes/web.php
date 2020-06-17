@@ -38,7 +38,11 @@ Route::prefix('admin')->middleware('auth')->group( function() {
     Route::post('disease/store', 'DiseaseController@store')->name('disease.store');
 
     Route::post('company/store', 'CompanyController@store')->name('company.store');
+
+    Route::get('collection/create', 'CollectionLocationController@create')->name('collection.create');
     Route::post('collection/store', 'CollectionLocationController@store')->name('collection.store');
+
+    Route::post('profession/store' , 'ProfessionController@store')->name('profession.store');   
 
 
 });

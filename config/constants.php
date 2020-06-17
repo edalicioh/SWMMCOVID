@@ -13,7 +13,8 @@ return [
 		2 => 'Sáude Pública Municipal',
         3 => 'Autonomos',
         4 => 'Trabalhador da iniciativa privada',
-		4 => 'Outros: estudantes, estagiários etc',
+        5 => 'Outros: estudantes, estagiários etc',
+        6 => 'Não informado'
     ],
     'STATUS' => [
         0  => 'Não detectável (negativo)'  ,

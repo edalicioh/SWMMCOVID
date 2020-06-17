@@ -48,8 +48,8 @@ class CreatePeopleTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->unsignedBigInteger('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('companies');
+            $table->unsignedBigInteger('profession_id')->nullable();
+            $table->foreign('profession_id')->references('id')->on('professions');
 
             $table->unsignedBigInteger('contaminations_id')->nullable();
             $table->foreign('contaminations_id')->references('id')->on('contaminations');
