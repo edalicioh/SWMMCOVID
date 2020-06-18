@@ -3,6 +3,7 @@
         <h2 class="text-center">Adicionar Estado</h2>
         <form action="{{ route('state.store') }} " method="POST">
             @csrf
+
             <div class="form-group">
                 <label for="state_name" class="required">Nome do Estado</label>
                 <input type="text" class="form-control {{ $errors->has('state_name') ? 'is-invalid' : '' }}"
@@ -38,6 +39,7 @@
                     </div>
                   @endif
               </div>
+                <button type="submit" class="btn btn-primary float-left" id="search-state">Buscar</button>
                 <button type="submit" class="btn btn-primary float-right">Salvar</button>
         </form>
     </div>

@@ -38,11 +38,16 @@ class CollectionLocationController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->address_id = (new AddressController())->store($request);
-            CollectionLocation::create($request->all());
-            return CollectionLocation::all();
+            $addressId = (new AddressController())->store($request);
+            $all = $request->all();
+            $all['address_id'] = $addressId;
+            CollectionLocation::create($all);
+            toastr()->success('Dados Salvo com Sucesso :)');
+            return redirect('/admin/person');
         } catch (\Exception $e) {
-           return false;
+            toastr()->error('Erro ao salvar os dados :/ ');
+            return back()->withInput();
+            dd($e);
         }
     }
 

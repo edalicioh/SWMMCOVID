@@ -206,6 +206,7 @@ $('.state').change( (e) => {
             `
             console.log(element);
         })
+        html += '<option value="0">Não informado</option>'
         $('.city').html(html)
     })
 
@@ -225,6 +226,7 @@ $('.city').change( (e) => {
             `
             console.log(element);
         })
+        html += '<option value="0">Não informado</option>'
         $('.district').html(html)
     })
 

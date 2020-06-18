@@ -150,9 +150,9 @@ class PersonController extends Controller
             return redirect('/admin/person');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             toastr()->error('Erro ao salvar os dados :/ ');
             return back()->withInput();
+            dd($e);
         }
     }
 

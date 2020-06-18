@@ -24,6 +24,7 @@ return [
         4  => 'Tratamento Monitoramento domiciliar',
         5  => 'Recuperado',
         6  => 'Óbito',
+        7  => 'Aguardando Resultado',
     ],
 
     'ATTENDANCES' => [
@@ -41,13 +42,17 @@ return [
         4   => 'CONTATO COM PESSOA QUE VEIO DO EXTERIOR',
         5   => 'LOCAL DE TRABALHO',
         6   => 'EVENTO / SHOW',
-        7   => 'OUTROS'
+        7   => 'OUTROS',
+        8   => 'não informado'
     ],
 
     'EXAM_STATUS' => [
         0 => 'Hospital',
+        2 => 'Laboratorio',
+        3 => 'Locais de Coleta Movel',
+        4 => 'USB / UPA',
+        5 => 'Secretaria da Saúde',
         1 => 'Lar',
-        2 => 'Laboratorio'
     ]
 ];
 

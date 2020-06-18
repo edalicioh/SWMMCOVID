@@ -48,6 +48,7 @@ let districts = ''
 let camboriu
 
 let store;
+let myLayer;
 
 
 axios.get('public/api/map/full')
@@ -69,7 +70,7 @@ axios.get('public/api/map/full')
 
         L.tileLayer(
             'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZWRhbGljaW8iLCJhIjoiY2thZTVxb3hoMGdldTJybGR0bmRhMzgxeiJ9.2YVn5NR7K2g-mOF8yB4Y_Q', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            attribution: ' &copy; <a href="http://www.camboriu.ifc.edu.br/">IFC - Campus Camboriú</a>',
             maxZoom: 17,
             id: 'mapbox/streets-v11',
             tileSize: 512,
@@ -95,13 +96,20 @@ axios.get('public/api/map/full')
 
         L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
 
+        getCoordinates( cities[0].city_name ,  {
+            "color": "#ff7800",
+            "weight": 5,
+            "opacity": 0.1
+        } , cities[0] )
 
-        divLoad.style.display = "none"
         store = [response.data.data.quantidade, cities[0].city_name]
         listInfo(response.data.data.quantidade, cities[0].city_name)
         map(response.data.data.locais);
         OptDistrict(districts)
         addhospital()
+
+
+        divLoad.style.display = "none"
 
 
 
@@ -113,13 +121,7 @@ axios.get('public/api/map/full')
 
 const map = (position) => {
     position.map(e => {
-        L.circle(e.position.split(','), {
-            color: '#f00',
-            fillOpacity: 0.5,
-            radius: 200
-        })
-            .bindPopup(`<b>${e.name} : ${e.quantidade}</b>`)
-            .addTo(mymap);
+        getCoordinates( 'camboriu '+ e.name , null , e)
     })
 }
 
@@ -189,6 +191,7 @@ function OptDistrict(districts) {
     let html = '<option selected disabled>Buscar por Bairro</option><option value="-0" >Ver Todos</option>'
 
     districts.map(e => {
+
         html += `<option value="${e.id}">${e.district_name}</option>`
 
     })
@@ -233,5 +236,48 @@ function transformeIcon(type) {
 
 
 
+function getCoordinates(name , style = null , dados = null) {
+    axios.get(`https://nominatim.openstreetmap.org/search?format=geojson&polygon_geojson=1&limit=1&q=${name}`)
+    .then(res => {
+        let feature = res.data.features[0]
+        feature.data = dados
+        myLayer = L.geoJSON(feature, {
+                style : style,
+                onEachFeature: onEachFeature,
+                pointToLayer: pointToLayer
+        }
+        ).addTo(mymap);
+
+    })
+}
+
+function onEachFeature(feature, layer) {
+    if(feature.data.name){
+        layer.bindPopup(feature.data.name);
+    } else {
+        layer.bindPopup(feature.data.city_name)
+    }
+
+    layer.on({
+        click: zoomToFeature
+    });
+}
+
+function zoomToFeature(e) {
+    mymap.fitBounds(e.target.getBounds());
+}
+
+function pointToLayer (feature, latlng) {
+    console.log(feature);
+
+    return L.circleMarker(feature.data, {
+        radius: 8,
+        fillColor: "#ff7800",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+    });
+}
 
 

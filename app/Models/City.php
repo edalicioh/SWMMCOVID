@@ -21,4 +21,8 @@ class City extends Model
     {
         return $this->belongsTo('App\Models\State');
     }
+    public function district()
+    {
+        return $this->hasOne('App\Models\District');
+    }
 }

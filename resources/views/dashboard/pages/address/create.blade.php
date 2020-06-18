@@ -18,7 +18,9 @@
         @include('dashboard.pages.address.components._fromDistrict')
     </div>
 </div>
-
+<div class="row">
+    @include('dashboard.pages.address.components._table')
+</div>
 @stop
 
 
@@ -100,6 +102,12 @@
             alert('Para a busca o campo nome deve ser preenchido')
         }
     })
+
+    $('.bairro').click(function (e) {
+        e.preventDefault();
+        console.log(e.target.dataset.id);
+
+    });
 
 
 </script>

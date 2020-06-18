@@ -17,7 +17,7 @@ class CreateStatesTable extends Migration
             $table->id();
             $table->string('state_name');
             $table->string('uf');
-            $table->string('state_coordinates');
+            $table->string('state_coordinates')->unique();
         });
     }
 

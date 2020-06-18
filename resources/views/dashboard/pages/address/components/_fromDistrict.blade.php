@@ -43,6 +43,8 @@
                     </div>
                   @endif
               </div>
+
+              <button type="submit" class="btn btn-primary float-left" id="search-district">Buscar</button>
             <button type="submit" class="btn btn-primary float-right">Salvar</button>
         </form>
     </div>

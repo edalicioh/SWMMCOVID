@@ -16,19 +16,19 @@ class CreatePeopleTable extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             $table->string('person_name')->nullable(true);
-            $table->string('gender');
+            $table->string('gender')->nullable(true);
             $table->string('cpf')->unique()->nullable(true);
             $table->string('sus_id')->unique()->nullable(true);
             $table->string('phone')->nullable(true);
             $table->dateTime('birth_date')->nullable(true);
-            $table->integer('age');
+            $table->integer('age')->nullable(true);
             $table->integer('work_status')->comment('
                 funcionário público => 0
                 setor médico => 1
                 setor privado => 2
                 autónomos =>3
                 outros => 4'
-            );
+            )->nullable(true);
 
             $table->integer('person_status')->comment('
                 Monitorada  => 0,
@@ -37,7 +37,7 @@ class CreatePeopleTable extends Migration
                 Óbito       => 3,
                 Tratamento  => 4,
             '
-            );
+            )->nullable(true);
 
             $table->boolean('patient')->nullable(true);
             $table->dateTime('first_medical_care');

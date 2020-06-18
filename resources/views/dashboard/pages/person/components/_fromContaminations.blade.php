@@ -30,7 +30,6 @@
                 }}
                 value="{{$key}}">{{$location}}</option>
                 @endforeach
-                <option value="não informado" >não informado</option>
             </select>
             @if ($errors->has('possible_location'))
             <div class="invalid-feedback">

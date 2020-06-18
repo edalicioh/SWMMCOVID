@@ -13,11 +13,22 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'user_name' => 'Admin',
-            'email' => 'admin@admin.com',
-            'password' => bcrypt('admin'),
-            'companies_id' =>  DB::table('companies')->pluck('id')[0]
-        ]);
+        /*, ; ; r.bw@hotmail.com;
+
+                Juliana => r.bw@hotmail.com,
+                Cleonice => cleonice.beppler@ifc.edu.br,
+                Adelson => adelsonbc@gmail.com,
+                Leandro => leandro.mondini@ifc.edu.br,
+        */
+        $users = [
+            [
+                'user_name' => 'Edalicio',
+                'email' => 'edalicio@outlook.com',
+                'password' => bcrypt('edalicio'),
+                'companies_id' =>  DB::table('companies')->pluck('id')[0]
+            ],
+        ];
+
+        User::insert( $users);
     }
 }
