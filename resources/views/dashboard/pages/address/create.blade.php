@@ -26,6 +26,9 @@
 
 @section('js')
 <script>
+    const bairro = {!! $district !!}
+
+
 
     document.getElementById('search-state').addEventListener('click', e => {
         e.preventDefault()
@@ -105,9 +108,16 @@
 
     $('.bairro').click(function (e) {
         e.preventDefault();
-        console.log(e.target.dataset.id);
-
+        const key = e.target.dataset.id;
+        document.getElementById('city-'+ bairro[key].city_id).selected = true
+        document.getElementById('district_name').value = bairro[key].district_name
+        document.getElementById('district_coordinates').value = bairro[key].district_coordinates
+        document.getElementById('put-district').innerHTML = '{{method_field('PUT')}}'
+        document.getElementById('from-district').action = '../district/' + e.target.dataset.id;
     });
+
+
+
 
 
 </script>

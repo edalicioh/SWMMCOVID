@@ -96,7 +96,7 @@ class ApiMapController extends Controller
 
     protected function quantidadePositivo($status , $value)
     {
-        if ($status > 1) {
+        if ($status > 1 && $status != 7) {
           $this->positivo += count($value);
         }
         return count($value);

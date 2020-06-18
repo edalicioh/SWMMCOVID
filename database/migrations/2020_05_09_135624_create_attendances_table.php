@@ -17,15 +17,15 @@ class CreateAttendancesTable extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('exam_result');
+            $table->string('exam_result')->nullable();
             $table->text('annotations')->nullable(true);
 
-            $table->integer('status_attendance');
+            $table->integer('status_attendance')->nullable();
 
             $table->unsignedBigInteger('hospital_id')->nullable();
             $table->foreign('hospital_id')->references('id')->on('hospitals');
 
-            $table->unsignedBigInteger('person_id');
+            $table->unsignedBigInteger('person_id')->nullable();
             $table->foreign('person_id')->references('id')->on('people');
         });
     }

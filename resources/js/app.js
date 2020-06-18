@@ -38,6 +38,12 @@ const STATUS = [
         name: 'Óbito',
         color: 'fa-cross',
         icon: '#2B2B29',
+    },
+    {
+        name: "Aguardando Resultado",
+        color: '#E85720',
+        icon: 'fa-temperature-high',
+
     }
 ]
 
@@ -121,7 +127,13 @@ axios.get('public/api/map/full')
 
 const map = (position) => {
     position.map(e => {
-        getCoordinates( 'camboriu '+ e.name , null , e)
+        L.circle(e.position.split(','), {
+            color: '#f00',
+            fillOpacity: 0.5,
+            radius: 200
+        })
+            .bindPopup(`<b>${e.name} : ${e.quantidade}</b>`)
+            .addTo(mymap);
     })
 }
 
@@ -206,6 +218,7 @@ function listInfo(infos, name) {
         const a = transformeIcon(e.tipo)
         console.log(a);
 
+
         html += `<li class="list-group-item d-flex justify-content-between align-items-center text-uppercase text-white"
         style="background: ${a.cor} ;">
                     ${a.html}
@@ -221,7 +234,7 @@ function transformeIcon(type) {
     console.log(type);
     let saida;
     STATUS.map(e => {
-        if (e.name === type) {
+        if (e.name == type) {
             saida = {
                 cor: e.color,
                 html: `<h5 class="font-weight-bold"><i class="fas ${e.icon}  mr-2"></i>${type}</h5>`
@@ -237,7 +250,8 @@ function transformeIcon(type) {
 
 
 function getCoordinates(name , style = null , dados = null) {
-    axios.get(`https://nominatim.openstreetmap.org/search?format=geojson&polygon_geojson=1&limit=1&q=${name}`)
+
+  /*   axios.get(`https://nominatim.openstreetmap.org/reverse?format=geojson&polygon_geojson=1&limit=1&q=${name}`)
     .then(res => {
         let feature = res.data.features[0]
         feature.data = dados
@@ -248,7 +262,7 @@ function getCoordinates(name , style = null , dados = null) {
         }
         ).addTo(mymap);
 
-    })
+    }) */
 }
 
 function onEachFeature(feature, layer) {

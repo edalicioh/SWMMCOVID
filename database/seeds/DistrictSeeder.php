@@ -48,6 +48,11 @@ class DistrictSeeder extends Seeder
                 'district_name' => 'Centro',
                 'district_coordinates' => '-27.0218760, -48.6517795',
                 'city_id' => DB::table('cities')->pluck('id')[0]
+            ],
+            [
+                'district_name' => 'nao tem',
+                'district_coordinates' => '-27.0273601,-48.6535657',
+                'city_id' => DB::table('cities')->pluck('id')[0]
             ]
         ];
 

@@ -263,6 +263,13 @@ return [
             'icon'    => 'fas fa-fw fa-map-marked-alt mr-2',
         ],
 
+        ['header' => ''],
+        [
+            'text' => 'Adicionar',
+            'url'  => 'admin/csv/create',
+            'icon'    => 'fas fa-fw fa-map-marked-alt mr-2',
+        ],
+
     ],
 
     /*

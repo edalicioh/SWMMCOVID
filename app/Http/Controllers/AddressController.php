@@ -30,6 +30,7 @@ class AddressController extends Controller
         $states = DB::table('states')->get();
         $cities = DB::table('cities')
         ->join('states','cities.state_id' ,'states.id')
+        ->select('*','cities.id as cities_id')
         ->get();
         $district = DB::table('districts')
         ->join('cities','districts.city_id' ,'cities.id')

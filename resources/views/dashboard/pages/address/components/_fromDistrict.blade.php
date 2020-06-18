@@ -1,16 +1,18 @@
 <div class="card card-info card-outline">
     <div class="card-body">
         <h2 class="text-center">Adicionar Bairro</h2>
-        <form action="{{ route('district.store') }} " method="POST">
+        <form id="from-district" action="{{ route('district.store') }} " method="POST">
             @csrf
+            <div id="put-district"></div>
             <div class="form-group">
             <label for="city" class="required">Cidade</label>
             <select class="form-control {{ $errors->has('city_id') ? 'is-invalid' : '' }}" id="city" name="city_id">
                 <option value="" disabled selected>Escolha a cidade</option>
                 @foreach ($cities as $city)
                     <option
-                    {{ old('city_id') == $city->id ? 'selected' : ''  }}
-                    value="{{$city->id}}">{{$city->city_name}}</option>
+                    id="city-{{ $city->cities_id }}"
+                    {{ old('city_id') == $city->cities_id ? 'selected' : ''  }}
+                    value="{{$city->cities_id}}">{{$city->city_name}}</option>
                 @endforeach
             </select>
             @if ($errors->has('city_id'))

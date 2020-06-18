@@ -62,11 +62,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                    @foreach ($district as $item)
+                    @foreach ($district as $key => $item)
                     <tr>
                         <td>{{$item->district_name}}</td>
                         <td>{{ $item->city_name }}</td>
-                        <td><button type="submit" data-id="{{ $item->district_id }}" class="btn btn-primary float-right bairro">editar</button></td>
+                        <td>
+                            <button type="submit" data-id="{{ $key }}" class="btn btn-primary bairro">editar</button>
+                        </td>
                       </tr>
                     @endforeach
                 </tbody>
