@@ -37418,14 +37418,20 @@ function getCoordinates(name) {
   var dados = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
   ;
   axios.get("public/js/".concat(name, ".geojson")).then(function (res) {
-    var feature = res.data.features[0];
-    feature.data = dados;
-    myLayer = L.geoJSON(feature, {
-      onEachFeature: onEachFeature,
-      pointToLayer: pointToLayer
-    }).addTo(mymap);
+    console.log(res);
+
+    if (res.status === 200) {
+      var feature = res.data.features[0];
+      feature.data = dados;
+      myLayer = L.geoJSON(feature, {
+        onEachFeature: onEachFeature,
+        pointToLayer: pointToLayer
+      }).addTo(mymap);
+    } else {
+      map(dados);
+    }
   })["catch"](function (error) {
-    map(dados);
+    console.log(error.response);
   });
 }
 

@@ -245,17 +245,24 @@ function getCoordinates( name , style = null , dados = null) {
    axios.get(`public/js/${name}.geojson`)
 
     .then( res => {
-        let feature = res.data.features[0]
-        feature.data = dados
-        myLayer = L.geoJSON(feature, {
-                onEachFeature: onEachFeature,
-                pointToLayer: pointToLayer
+        console.log(res);
+
+        if (res.status === 200 ) {
+            let feature = res.data.features[0]
+            feature.data = dados
+            myLayer = L.geoJSON(feature, {
+                    onEachFeature: onEachFeature,
+                    pointToLayer: pointToLayer
+            }
+            ).addTo(mymap);
+        }else{
+            map(dados)
         }
-        ).addTo(mymap);
 
     })
     .catch(function (error) {
-        map(dados)
+        console.log(error.response);
+
       })
 }
 
