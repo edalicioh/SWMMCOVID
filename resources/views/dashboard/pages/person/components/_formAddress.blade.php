@@ -81,7 +81,6 @@
                         {{ isset($address->district_id) && $address->district_id == $district->id ? 'selected' : '' }}
                         value="{{$district->id}}">{{$district->district_name}}</option>
                     @endforeach
-                    <option value="0">Não informado</option>
                 @endif
             </select>
               @if ($errors->has('district_id'))

@@ -107,6 +107,9 @@ class AttendanceController extends Controller
             $all = $request->all();
             $all['person_id'] = $request->person_id ;
 
+            $exp = explode(' ', $all['date']);
+            $data = implode('-', array_reverse(explode('/', $exp[0]))) . ' ' . $exp[1];
+            $all['date'] = date('Y-m-d H:i:s', strtotime($data));
 
             $attendance = Attendance::create($all);
 
@@ -137,10 +140,10 @@ class AttendanceController extends Controller
             return redirect('/admin/person');
 
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
             toastr()->error('Erro ao salvar os dados :/ ');
             return back()->withInput();
+            dd($e);
         }
     }
 

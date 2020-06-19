@@ -37258,8 +37258,8 @@ var STATUS = [{
   icon: 'fa-smile'
 }, {
   name: 'Óbito',
-  color: 'fa-cross',
-  icon: '#2B2B29'
+  icon: 'fa-cross',
+  color: '#2B2B29'
 }, {
   name: "Aguardando Resultado",
   color: '#E85720',
@@ -37308,30 +37308,26 @@ axios.get('public/api/map/full').then(function (response) {
   L.control.watermark({
     position: 'bottomleft'
   }).addTo(mymap);
-  getCoordinates(cities[0].city_name, {
+  getCoordinates(cities[0].city_name.toLowerCase(), {
     "color": "#ff7800",
     "weight": 5,
     "opacity": 0.1
   }, cities[0]);
   store = [response.data.data.quantidade, cities[0].city_name];
   listInfo(response.data.data.quantidade, cities[0].city_name);
-  map(response.data.data.locais);
   OptDistrict(districts);
   addhospital();
   divLoad.style.display = "none";
 })["catch"](function (error) {
-  // handle error
   console.log(error);
 });
 
 var map = function map(position) {
-  position.map(function (e) {
-    L.circle(e.position.split(','), {
-      color: '#f00',
-      fillOpacity: 0.5,
-      radius: 200
-    }).bindPopup("<b>".concat(e.name, " : ").concat(e.quantidade, "</b>")).addTo(mymap);
-  });
+  L.circle(position.district_coordinates.split(','), {
+    color: '#f00',
+    fillOpacity: 0.5,
+    radius: 200
+  }).bindPopup("<b>".concat(position.district_name, "</b>")).addTo(mymap);
 };
 
 document.getElementById('search-district').addEventListener('submit', function (e) {
@@ -37375,7 +37371,6 @@ document.getElementById('menu-info').addEventListener('click', function (e) {
 
 function addhospital() {
   dados['hospital'].map(function (e) {
-    console.log(e);
     L.marker(e.local.split(","), {
       icon: L.AwesomeMarkers.icon({
         icon: 'hospital-symbol',
@@ -37390,6 +37385,7 @@ function OptDistrict(districts) {
   var html = '<option selected disabled>Buscar por Bairro</option><option value="-0" >Ver Todos</option>';
   districts.map(function (e) {
     html += "<option value=\"".concat(e.id, "\">").concat(e.district_name, "</option>");
+    getCoordinates(e.district_name.toLowerCase(), null, e);
   });
   document.getElementById('select-search').innerHTML = html;
 }
@@ -37398,7 +37394,6 @@ function listInfo(infos, name) {
   var html = "";
   infos.map(function (e) {
     var a = transformeIcon(e.tipo);
-    console.log(a);
     html += "<li class=\"list-group-item d-flex justify-content-between align-items-center text-uppercase text-white\"\n        style=\"background: ".concat(a.cor, " ;\">\n                    ").concat(a.html, "\n                    <span class=\"badge  badge-pill font-weight-bold\"><h5>").concat(e.quantidade, "</h5></span>\n                </li>");
   });
   document.getElementById('title-info').innerHTML = name;
@@ -37406,7 +37401,6 @@ function listInfo(infos, name) {
 }
 
 function transformeIcon(type) {
-  console.log(type);
   var saida;
   STATUS.map(function (e) {
     if (e.name == type) {
@@ -37420,25 +37414,24 @@ function transformeIcon(type) {
 }
 
 function getCoordinates(name) {
-  /*   axios.get(`https://nominatim.openstreetmap.org/reverse?format=geojson&polygon_geojson=1&limit=1&q=${name}`)
-    .then(res => {
-        let feature = res.data.features[0]
-        feature.data = dados
-        myLayer = L.geoJSON(feature, {
-                style : style,
-                onEachFeature: onEachFeature,
-                pointToLayer: pointToLayer
-        }
-        ).addTo(mymap);
-     }) */
-
   var style = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   var dados = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+  ;
+  axios.get("public/js/".concat(name, ".geojson")).then(function (res) {
+    var feature = res.data.features[0];
+    feature.data = dados;
+    myLayer = L.geoJSON(feature, {
+      onEachFeature: onEachFeature,
+      pointToLayer: pointToLayer
+    }).addTo(mymap);
+  })["catch"](function (error) {
+    map(dados);
+  });
 }
 
 function onEachFeature(feature, layer) {
-  if (feature.data.name) {
-    layer.bindPopup(feature.data.name);
+  if (feature.data.district_name) {
+    layer.bindPopup(feature.data.district_name);
   } else {
     layer.bindPopup(feature.data.city_name);
   }
@@ -37449,11 +37442,24 @@ function onEachFeature(feature, layer) {
 }
 
 function zoomToFeature(e) {
-  mymap.fitBounds(e.target.getBounds());
+  var district_id = e.target.feature.data.id;
+  axios.get("public/api/map/".concat(district_id)).then(function (response) {
+    if (isEmpty(response.data.data.locais)) {
+      console.log(response.data.data.locais);
+      response.data.data.locais.map(function (e) {
+        mymap.flyTo(e.position.split(','), 15);
+      });
+      listInfo(response.data.data.quantidade, response.data.data.locais[0].name);
+      mymap.fitBounds(e.target.getBounds());
+    } else {
+      listInfo(store[0], store[1]);
+      mymap.flyTo(camboriu, 13);
+      mymap.fitBounds(e.target.getBounds());
+    }
+  });
 }
 
 function pointToLayer(feature, latlng) {
-  console.log(feature);
   return L.circleMarker(feature.data, {
     radius: 8,
     fillColor: "#ff7800",

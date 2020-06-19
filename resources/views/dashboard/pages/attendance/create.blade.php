@@ -18,14 +18,11 @@
         </div>
     </div>
 </div>
+
+
 <form action="{{ route('attendance.store') }} " method="POST">
     @csrf
     <input type="hidden" name="person_id" value="{{ $person->id }}">
-    @if ( $errors->any() )
-        <div class="alert alert-danger" role="alert">
-            <b>ERRO:</b> Todo os campos com asterisco ( * ) devem ser preenchidos
-        </div>
-    @endif
 
     <div class="row">
         <div class="col-md-12">
@@ -33,15 +30,19 @@
         </div>
     </div>
     <div class="row  pb-3 text-right">
-        <button type="submit" class="btn btn-primary ">Salvar</button>
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary ">Salvar</button>
+        </div>
     </div>
+
 </form>
 @stop
 
 
 @section('js')
 <script>
-  $(function() {
+
+$(function() {
     const locale = {
         "separator": " - ",
         "applyLabel": "Aplicar",
@@ -72,11 +73,21 @@
         "firstDay": 1
       }
 
-
     $('.date-time').daterangepicker({
       singleDatePicker: true,
       autoApply: true,
+
       maxDate : moment(),
+      "locale": {
+        "format": "DD/MM/YYYY",
+        ...locale
+      },
+    })
+
+    $('.date').daterangepicker({
+      singleDatePicker: true,
+      autoApply: true,
+
       "locale": {
         "format": "DD/MM/YYYY",
         ...locale
@@ -85,12 +96,13 @@
 
     $('.date-time-hour').daterangepicker({
       singleDatePicker: true,
-      autoUpdateInput: true,
       timePicker: true,
+      timePicker24Hour: true,
+      startDate: moment(),
       autoApply: true,
       maxDate : moment(),
       "locale": {
-        "format": "DD/MM/YYYY hh:mm A",
+        "format": "DD/MM/YYYY H:mm",
         ...locale
       },
     })

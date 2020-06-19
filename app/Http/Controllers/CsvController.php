@@ -74,18 +74,18 @@ class CsvController extends Controller
 
                         if ($value[5]) {
 
-                            $s = District::where('district_name', 'ILIKE', '%' . $value[5] . '%')->get();
+                            $s = District::where('district_name', 'LIKE', '%' . $value[5] . '%')->get();
 
                             if (count($s) > 0) {
                                 $bairroId = $s[0]->id;
                                 $cidadeId = $s[0]->city_id;
                             } else {
-                                $s = District::where('district_name', 'ILIKE', '%' . 'nao tem' . '%')->get();
+                                $s = District::where('district_name', 'LIKE', '%' . 'Não informado' . '%')->get();
                                 $bairroId = $s[0]->id;
                                 $cidadeId = $s[0]->city_id;
                             }
                         } else {
-                            $s = District::where('district_name', 'ILIKE', '%' . 'nao tem' . '%')->get();
+                            $s = District::where('district_name', 'LIKE', '%' . 'Não informado' . '%')->get();
                             $bairroId = $s[0]->id;
                             $cidadeId = $s[0]->city_id;
                         }
@@ -107,11 +107,11 @@ class CsvController extends Controller
                             'person_name' =>  $value[1] ? $value[1] : 'nao informado',
                             'gender' => $value[2] ? $value[2] : 'O',
                             'age' => $value[3] && $value[3] != "Não informado" && $value[3] != ""  ? intval($value[3]) : 00,
-                            'phone' => $value[6] && $value[6] != "Não informado" ? $value[6] : '00',
+                            'phone' => $value[6] && $value[6] != "Não informado" ? $value[6] : '',
                             'work_status' => 1,
                             'patient' => 1,
-                            'person_status' => $value[12] ? $this->validaStatus($value[12]) : 4,
-                            'first_medical_care' => $value[7] && $value[7] != "******" && $value[7] != "Não informado" ? $value[7] : date('Y-m-d H:i:s'),
+                            'person_status' => $value[15] ? $this->validaStatus($value[15]) : 0,
+                            'first_medical_care' => $value[7] && $value[7] != "******" && $value[7] != "Não informado" ?date('Y-m-d H:i:s', strtotime($value[7]) ) : date('Y-m-d H:i:s'),
                             'address_id' => $addressId,
                             'user_id' =>  Auth::user()->id,
                         ];
@@ -119,8 +119,9 @@ class CsvController extends Controller
                         $person = Person::create($all);
 
                         $atte = [
-                            'date' => $value[0] ? $value[0] : date('Y-m-d H:i:s'),
-                            'exam_result' => $this->validaStatus($value[12]),
+                            'date' => $value[0] ? date('Y-m-d H:i:s', strtotime($value[0]) )  : date('Y-m-d H:i:s'),
+                            'exam_result' => $value[12] ? $this->validaExm($value[12]) : 4,
+                            'status_attendance' => $value[15] ? $this->validaStatus($value[15]) : 0 ,
                             'person_id' => $person->id,
                         ];
 
@@ -128,13 +129,16 @@ class CsvController extends Controller
 
 
                         $sintomas =  explode(', ', $value[8]);
+                        $ass = [];
                         foreach ($sintomas as $Skey => $sintoma) {
-                            $sintoma = Symptom::where('symptom_description', 'ILIKE', '%' . $sintoma . '%')->get();
-                            if (isset($sintoma[0])) {
+                            $sintoma = Symptom::where('symptom_description', 'LIKE', '%' . $sintoma . '%')->get();
 
-                                $attendance->symptoms()->sync($sintoma[0]->id);
+
+                            if (isset($sintoma[0])) {
+                                $ass[] = $sintoma[0]->id;
                             }
                         }
+                        $attendance->symptoms()->sync($ass);
                     }
                 }
 
@@ -147,7 +151,9 @@ class CsvController extends Controller
             toastr()->success('Dados Salvo com Sucesso :)');
             return redirect('/admin/person');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
+
             toastr()->error('Erro ao salvar os dados :/ ');
             return back()->withInput();
         }
@@ -160,7 +166,7 @@ class CsvController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    protected function validaStatus($status)
+    protected function validaExm($status)
     {
         switch ($status) {
             case 'não detectável':
@@ -171,4 +177,26 @@ class CsvController extends Controller
                 return 4;
         }
     }
+
+    protected function validaStatus($status)
+    {
+        switch ($status) {
+            case 'isolamento':
+                return 4;
+            case 'alta':
+                return 5;
+            case 'óbito':
+                return 6;
+            case 'Óbito':
+                return 6;
+            case 'uti':
+                return 2;
+            case 'enfermaria':
+                return 2;
+            default:
+                return 0;
+        }
+    }
+
+
 }

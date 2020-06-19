@@ -14,11 +14,6 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#localColetaModal">
-                        Novo Local
-                    </button>
-                </div>
-                <div class="form-group">
                     <label for="collection_date">Data Coleta</label>
                     <input type="text"
                         class="form-control date-time-hour"
@@ -26,8 +21,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="result_date">Data saiu o Resultado</label>
-                    <input type="text" class="form-control date" id="result_date" name="result_date" placeholder="">
+                    <label for="result_date">Data do Recebimento do Resultado</label>
+                    <input type="text" class="form-control date-time" id="result_date" name="result_date" placeholder="">
                 </div>
 
                 <div class="form-group">
@@ -112,6 +107,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 

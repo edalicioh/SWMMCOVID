@@ -36,8 +36,8 @@ const STATUS = [
     },
     {
         name: 'Óbito',
-        color: 'fa-cross',
-        icon: '#2B2B29',
+        icon: 'fa-cross',
+        color: '#2B2B29',
     },
     {
         name: "Aguardando Resultado",
@@ -102,7 +102,7 @@ axios.get('public/api/map/full')
 
         L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
 
-        getCoordinates( cities[0].city_name ,  {
+        getCoordinates(cities[0].city_name.toLowerCase() ,  {
             "color": "#ff7800",
             "weight": 5,
             "opacity": 0.1
@@ -110,31 +110,25 @@ axios.get('public/api/map/full')
 
         store = [response.data.data.quantidade, cities[0].city_name]
         listInfo(response.data.data.quantidade, cities[0].city_name)
-        map(response.data.data.locais);
-        OptDistrict(districts)
+
+        OptDistrict(districts  )
         addhospital()
-
-
         divLoad.style.display = "none"
-
-
 
     })
     .catch(function (error) {
-        // handle error
         console.log(error);
     })
 
 const map = (position) => {
-    position.map(e => {
-        L.circle(e.position.split(','), {
+      L.circle(position.district_coordinates.split(','), {
             color: '#f00',
             fillOpacity: 0.5,
             radius: 200
         })
-            .bindPopup(`<b>${e.name} : ${e.quantidade}</b>`)
+            .bindPopup(`<b>${position.district_name}</b>`)
             .addTo(mymap);
-    })
+
 }
 
 
@@ -186,7 +180,6 @@ document.getElementById('menu-info').addEventListener('click', e => {
 
 function addhospital() {
     dados['hospital'].map((e) => {
-        console.log(e);
         L.marker(e.local.split(","),
             {
                 icon: L.AwesomeMarkers.icon(
@@ -199,12 +192,13 @@ function addhospital() {
     });
 }
 
-function OptDistrict(districts) {
+function OptDistrict(districts ) {
     let html = '<option selected disabled>Buscar por Bairro</option><option value="-0" >Ver Todos</option>'
 
-    districts.map(e => {
+    districts.map( e  => {
 
         html += `<option value="${e.id}">${e.district_name}</option>`
+        getCoordinates(e.district_name.toLowerCase() , null , e )
 
     })
     document.getElementById('select-search').innerHTML = html
@@ -216,9 +210,6 @@ function listInfo(infos, name) {
 
     infos.map(e => {
         const a = transformeIcon(e.tipo)
-        console.log(a);
-
-
         html += `<li class="list-group-item d-flex justify-content-between align-items-center text-uppercase text-white"
         style="background: ${a.cor} ;">
                     ${a.html}
@@ -231,7 +222,6 @@ function listInfo(infos, name) {
 }
 
 function transformeIcon(type) {
-    console.log(type);
     let saida;
     STATUS.map(e => {
         if (e.name == type) {
@@ -249,41 +239,63 @@ function transformeIcon(type) {
 
 
 
-function getCoordinates(name , style = null , dados = null) {
+function getCoordinates( name , style = null , dados = null) {
+;
 
-  /*   axios.get(`https://nominatim.openstreetmap.org/reverse?format=geojson&polygon_geojson=1&limit=1&q=${name}`)
-    .then(res => {
+   axios.get(`public/js/${name}.geojson`)
+
+    .then( res => {
         let feature = res.data.features[0]
         feature.data = dados
         myLayer = L.geoJSON(feature, {
-                style : style,
                 onEachFeature: onEachFeature,
                 pointToLayer: pointToLayer
         }
         ).addTo(mymap);
 
-    }) */
+    })
+    .catch(function (error) {
+        map(dados)
+      })
 }
 
 function onEachFeature(feature, layer) {
-    if(feature.data.name){
-        layer.bindPopup(feature.data.name);
+    if(feature.data.district_name){
+        layer.bindPopup(feature.data.district_name);
     } else {
         layer.bindPopup(feature.data.city_name)
     }
-
     layer.on({
         click: zoomToFeature
     });
 }
 
 function zoomToFeature(e) {
-    mymap.fitBounds(e.target.getBounds());
+   const district_id = e.target.feature.data.id;
+
+
+    axios.get(`public/api/map/${district_id}`)
+        .then(function (response) {
+            if (isEmpty(response.data.data.locais)) {
+                console.log(response.data.data.locais);
+
+                response.data.data.locais.map(e => {
+
+                    mymap.flyTo(e.position.split(','), 15)
+                });
+                listInfo(response.data.data.quantidade, response.data.data.locais[0].name)
+                mymap.fitBounds(e.target.getBounds());
+
+            } else {
+                listInfo(store[0], store[1])
+                mymap.flyTo(camboriu, 13)
+                mymap.fitBounds(e.target.getBounds());
+            }
+        })
+
 }
 
 function pointToLayer (feature, latlng) {
-    console.log(feature);
-
     return L.circleMarker(feature.data, {
         radius: 8,
         fillColor: "#ff7800",

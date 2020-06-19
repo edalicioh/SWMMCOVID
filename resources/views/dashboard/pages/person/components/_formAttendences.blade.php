@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="result_date">Data saiu o Resultado</label>
+                    <label for="result_date">Data do Recebimento do Resultado</label>
                     <input type="text" class="form-control date" id="result_date" name="result_date" placeholder="">
                 </div>
 

@@ -22,9 +22,9 @@ class UserSeeder extends Seeder
         */
         $users = [
             [
-                'user_name' => 'Edalicio',
-                'email' => 'edalicio@outlook.com',
-                'password' => bcrypt('edalicio'),
+                'user_name' => 'Admin',
+                'email' => 'admin@admin.com',
+                'password' => bcrypt('admin'),
                 'companies_id' =>  DB::table('companies')->pluck('id')[0]
             ],
         ];

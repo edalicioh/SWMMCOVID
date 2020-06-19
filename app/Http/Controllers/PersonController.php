@@ -265,6 +265,6 @@ class PersonController extends Controller
 
     protected function validaStatus($status)
     {
-        return Config::get('constants.ATTENDANCES')[$status];
+        return Config::get('constants.STATUS')[$status];
     }
 }

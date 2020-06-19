@@ -14,6 +14,12 @@ class DistrictSeeder extends Seeder
     public function run()
     {
         $district = [
+
+            [
+                'district_name' => 'Não informado',
+                'district_coordinates' => '-27.0273601,-48.6535657',
+                'city_id' => DB::table('cities')->pluck('id')[0]
+            ],
             [
                 'district_name' => 'Areias',
                 'district_coordinates' => '-27.0313994,-48.6592983',
@@ -40,20 +46,10 @@ class DistrictSeeder extends Seeder
                 'city_id' => DB::table('cities')->pluck('id')[0]
             ],
             [
-                'district_name' => 'São Francisco de Assis',
-                'district_coordinates' => '-27.0215201, -48.6367202',
-                'city_id' => DB::table('cities')->pluck('id')[0]
-            ],
-            [
                 'district_name' => 'Centro',
                 'district_coordinates' => '-27.0218760, -48.6517795',
                 'city_id' => DB::table('cities')->pluck('id')[0]
             ],
-            [
-                'district_name' => 'nao tem',
-                'district_coordinates' => '-27.0273601,-48.6535657',
-                'city_id' => DB::table('cities')->pluck('id')[0]
-            ]
         ];
 
         District::insert($district);
