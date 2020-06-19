@@ -62,16 +62,15 @@ class AttendanceController extends Controller
                     }
 
                     $attendances[$key] = [
-                        'date'          => $attendance[0]->date,
-                        'annotations'   => $attendance[0]->annotations,
-                        'attendance_id' => $key,
-                        'status_attendance'   => $attendance[0]->status_attendance,
-                        'symptoms'      => implode(', ', $symptomDescription),
-                        'diseases'      => implode(', ', $diseasesDescription)
+                        'date'                  => $attendance[0]->date,
+                        'annotations'           => $attendance[0]->annotations,
+                        'attendance_id'         => $key,
+                        'exam_result'           => $attendance[0]->exam_result,
+                        'symptoms'              => implode(', ', $symptomDescription),
+                        'diseases'              => implode(', ', $diseasesDescription)
 
                     ];
                 }
-
         return view('dashboard/pages/attendance/index', compact(['person' , 'attendances']));
     }
 
@@ -107,6 +106,8 @@ class AttendanceController extends Controller
             DB::beginTransaction();
             $all = $request->all();
             $all['person_id'] = $request->person_id ;
+
+
             $attendance = Attendance::create($all);
 
             if ($request->symptoms != 'null') {
@@ -124,9 +125,9 @@ class AttendanceController extends Controller
 
             $person = Person::where('id' , $request->person_id )->get()[0];
 
-            if ( ( $person->patient != $request->patient )||( $person->status != $request->status)) {
+            if ( ( $person->patient != $request->patient )||( $person->person_status != $request->person_status)) {
                 $person->patient = $request->patient;
-                $person->status = $request->status;
+                $person->person_status = $request->person_status;
                 $person->update();
             }
 
@@ -136,10 +137,10 @@ class AttendanceController extends Controller
             return redirect('/admin/person');
 
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
             toastr()->error('Erro ao salvar os dados :/ ');
             return back()->withInput();
-            dd($e);
         }
     }
 

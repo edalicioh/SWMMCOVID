@@ -39,24 +39,19 @@ class PersonController extends Controller
                 ->join('addresses', 'people.address_id', '=', 'addresses.id')
                 ->rightJoin('attendances', 'people.id', '=', 'attendances.person_id')
                 ->leftJoin('districts', 'addresses.district_id', '=', 'districts.id')
-                ->select('person_name', 'cpf', 'person_status', 'district_name', 'phone', 'person_id')
+                ->select('person_name', 'person_status', 'district_name', 'phone', 'person_id')
                 ->get()->groupBy('person_id');
-
             foreach ($people as $key => $value) {
                 $people[$key] = [
-                    'person_name'        => $value[0]->person_name,
-                    'cpf'         => $value[0]->cpf,
-                    'district_name' => $value[0]->district_name,
-                    'phone'        => $value[0]->phone,
-                    'person_id'     => $value[0]->person_id,
-                    'person_status'        => $this->validaStatus($value[0]->person_status)
+                    'person_name'           => $value[0]->person_name,
+                    'district_name'         => $value[0]->district_name,
+                    'phone'                 => $value[0]->phone,
+                    'person_id'             => $value[0]->person_id,
+                    'person_status'         => $this->validaStatus($value[0]->person_status)
                 ];
             }
-
-
             return DataTables::of($people)->make(true);
-        }
-
+       }
         return view('dashboard/pages/person/index');
     }
 
@@ -270,6 +265,6 @@ class PersonController extends Controller
 
     protected function validaStatus($status)
     {
-        return Config::get('constants.STATUS')[$status];
+        return Config::get('constants.ATTENDANCES')[$status];
     }
 }

@@ -17,7 +17,7 @@
 
                         <tr>
                             <td>{{  date( 'd/m/Y h:i' , strtotime( $attendance['date']))  }}</td>
-                            <td class="text-uppercase">{{ validateExam( $attendance['status_attendance'] ) }}</td>
+                            <td class="text-uppercase">{{ validateExam( $attendance['exam_result'] ) }}</td>
                             <td>{{  $attendance['annotations']  }}</td>
                             <td class="text-uppercase">{{ $attendance['symptoms'] }}</td>
                             <td class="text-uppercase">{{  $attendance['diseases'] }}</td>
@@ -34,6 +34,6 @@
 <?php
     function validateExam($exam)
     {
-        return Config::get('constants.STATUS')[$exam];
+        return Config::get('constants.ATTENDANCES')[$exam];
     }
 ?>

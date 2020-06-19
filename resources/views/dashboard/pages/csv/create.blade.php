@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Uploaded Arquivos do Facebook</h1>
+<h1>Uploaded Arquivo </h1>
 @stop
 
 @section('content')

@@ -26,7 +26,6 @@ $('#people-table').DataTable({
 
     columns: [
         {data: 'person_name', name: 'person_name' , title: 'Nome'},
-        {data: 'cpf', name: 'cpf' , title: 'CPF'},
         {data: 'person_status', name: 'person_status', title: 'Status' },
         {data: 'district_name', name: 'district_name' , title: 'Bairro' },
         {data: 'phone', name: 'phone' , title: 'Telefone'},
