@@ -1,5 +1,9 @@
 require('./bootstrap');
+const path = require('path')
 const { dados } = require('./dados')
+
+
+
 const divLoad = document.getElementById('load')
 divLoad.style.display = "flex"
 
@@ -65,7 +69,9 @@ axios.get('public/api/map/full')
         camboriu = cities[0].city_coordinates.split(',')
         const { quantidade } = response.data.data
 
+
         mymap = L.map('mapid', {
+            crs: L.CRS.EPSG3857,
             zoomControl: false,
         }).setView(camboriu, 13);
 
@@ -83,6 +89,8 @@ axios.get('public/api/map/full')
             zoomOffset: -1,
             accessToken: 'pk.eyJ1IjoiZWRhbGljaW8iLCJhIjoiY2thZTVxb3hoMGdldTJybGR0bmRhMzgxeiJ9.2YVn5NR7K2g-mOF8yB4Y_Q'
         }).addTo(mymap);
+
+        proj4.defs('EPSG:31982', '+proj=utm +zone=22 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
 
         L.Control.Watermark = L.Control.extend({
             onAdd: function (mymap) {
@@ -102,16 +110,17 @@ axios.get('public/api/map/full')
 
         L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
 
-        getCoordinates(cities[0].city_name.toLowerCase() ,  {
+        getCoordinates(cities[0].city_name.toLowerCase(), {
             "color": "#ff7800",
-            "weight": 5,
-            "opacity": 0.1
-        } , cities[0] )
+            "weight": 3,
+            "opacity": 0
+        }, cities[0])
 
         store = [response.data.data.quantidade, cities[0].city_name]
         listInfo(response.data.data.quantidade, cities[0].city_name)
 
-        OptDistrict(districts  )
+        map(response.data.data.locais)
+        OptDistrict(districts)
         addhospital()
         divLoad.style.display = "none"
 
@@ -121,13 +130,16 @@ axios.get('public/api/map/full')
     })
 
 const map = (position) => {
-      L.circle(position.district_coordinates.split(','), {
+    /* position.map(e => {
+        L.circle(e.position.split(','), {
             color: '#f00',
-            fillOpacity: 0.5,
-            radius: 200
+            fillOpacity: 0.3,
+            radius: 200,
+
         })
-            .bindPopup(`<b>${position.district_name}</b>`)
+            .bindPopup(`<b>${e.name}</b>`)
             .addTo(mymap);
+    }) */
 
 }
 
@@ -192,13 +204,13 @@ function addhospital() {
     });
 }
 
-function OptDistrict(districts ) {
+function OptDistrict(districts) {
     let html = '<option selected disabled>Buscar por Bairro</option><option value="-0" >Ver Todos</option>'
 
-    districts.map( e  => {
+    districts.map(e => {
 
         html += `<option value="${e.id}">${e.district_name}</option>`
-        getCoordinates(e.district_name.toLowerCase() , null , e )
+        //getCoordinates(e.district_name.toLowerCase(), null, e)
 
     })
     document.getElementById('select-search').innerHTML = html
@@ -239,35 +251,28 @@ function transformeIcon(type) {
 
 
 
-function getCoordinates( name , style = null , dados = null) {
-;
+function getCoordinates(name, style = null, dados = null) {
 
-   axios.get(`public/js/${name}.geojson`)
 
-    .then( res => {
-        console.log(res);
+    axios.get(`public/js/Mapa_Camboriu.geojson`)
 
-        if (res.status === 200 ) {
-            let feature = res.data.features[0]
-            feature.data = dados
-            myLayer = L.geoJSON(feature, {
-                    onEachFeature: onEachFeature,
-                    pointToLayer: pointToLayer
-            }
-            ).addTo(mymap);
-        }else{
-            map(dados)
-        }
+        .then(res => {
+            console.log(res.data);
+            L.Proj.geoJson(res.data, {
+                'pointToLayer': function (feature, latlng) {
+                    return L.marker(latlng).bindPopup(feature.properties.name);
+                }
+            }).addTo(mymap)
 
-    })
-    .catch(function (error) {
-        console.log(error.response);
+        })
+        .catch(function (error) {
+            console.log(error.response);
 
-      })
+        })
 }
 
 function onEachFeature(feature, layer) {
-    if(feature.data.district_name){
+    if (feature.data.district_name) {
         layer.bindPopup(feature.data.district_name);
     } else {
         layer.bindPopup(feature.data.city_name)
@@ -278,7 +283,9 @@ function onEachFeature(feature, layer) {
 }
 
 function zoomToFeature(e) {
-   const district_id = e.target.feature.data.id;
+    console.log(e);
+
+    const district_id = e.target.feature.data.id;
 
 
     axios.get(`public/api/map/${district_id}`)
@@ -302,7 +309,7 @@ function zoomToFeature(e) {
 
 }
 
-function pointToLayer (feature, latlng) {
+function pointToLayer(feature, latlng) {
     return L.circleMarker(feature.data, {
         radius: 8,
         fillColor: "#ff7800",

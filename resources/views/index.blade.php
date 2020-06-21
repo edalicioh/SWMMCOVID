@@ -61,6 +61,10 @@
 
 
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="{{ asset('public/js/proj4.js') }}" defer></script>
+    <script src="{{ asset('public/js/proj4-compressed.js') }}" defer></script>
+    <script src="{{ asset('public/js/proj4leaflet.js') }}" defer></script>
+
     <script src="{{ asset('public/js/leaflet.awesome-markers.min.js ') }}"></script>
    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
    <script src="{{ asset('public/js/app.js') }}" defer></script>
