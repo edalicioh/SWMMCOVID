@@ -61,5 +61,7 @@ Route::prefix('api')->group( function() {
     Route::get('state/{state_id}', 'ApiMapController@getCityByState' )->name('state.get');
     Route::get('city/{city_id}', 'ApiMapController@getDistrictsByCity' )->name('city.get');
 
+    Route::get('collection', 'ApiMapController@getCollection');
+
 
 });

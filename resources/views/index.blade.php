@@ -22,35 +22,21 @@
     </div>
     </div>
     </form>
-    @if (env('APP_ENV')!='Production' )
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class=" btn btn-success px-2 shadow-lg  rounded"  href="{{ url('/public/login')  }}">Login</a>
-            </li>
-        </ul>
-    @endif
-    @auth
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
+            <a class=" btn btn-success px-2 shadow-lg  rounded" id="coleta"  href="#">Buscar Local de coleta</a>
+        </li>
+        @auth
+        <li class="nav-item ml-3">
             <a class=" btn btn-success px-2 shadow-lg  rounded"  href="{{ url('/public/login') }}">Entra</a>
         </li>
+        @endauth
     </ul>
-    @endauth
 </nav>
     <div class="flex-center position-ref full-height">
 
         <div class="content">
-            <div id="info-box" class="shadow-lg">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title text-center " id="title-info" ></h2>
-                        <ul class="list-group list-group-flush " id="info-list"></ul>
-                    </div>
-                    <a href="http://www.camboriu.ifc.edu.br/autoprotecao-social/">
-                        <img src="{{ asset('public/img/banner-social.png') }}"  class="card-img-top" >
-                    </a>
-                </div>
-            </div>
+@include('components._infoBox')
             <div id="mapid"></div>
 
         </div>

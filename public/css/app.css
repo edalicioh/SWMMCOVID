@@ -10966,6 +10966,19 @@ label.required::after {
   transition: ease-in-out 1.3s;
 }
 
+.info-label {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.info-count {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #virus-load {
   font-size: 10rem;
   color: #145006;
@@ -10996,7 +11009,7 @@ label.required::after {
 
   #info-box {
     display: block;
-    width: 25%;
+    width: calc(25% - 40px);
   }
 }
 

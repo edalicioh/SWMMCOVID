@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\CollectionLocation;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -109,6 +111,12 @@ class ApiMapController extends Controller
     public function getDistrictsByCity($city_id)
     {
         return DB::table('districts')->where('city_id' , '=' , $city_id)->get();
+    }
+
+    public function getCollection()
+    {
+        $co =  CollectionLocation::all();
+        dd($co);
     }
 
 }

@@ -47,7 +47,7 @@ class CsvController extends Controller
                 if ($value[1] == '') {
                     $cont++;
                 }
-                if ($key > 7) {
+                if ($key > 0) {
                     $person = Person::where('person_name', '=', $value[1])->get();
                     if (count($person) == 0) {
                         if ($value[4]) {

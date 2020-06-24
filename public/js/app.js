@@ -37546,73 +37546,38 @@ var path = __webpack_require__(/*! path */ "./node_modules/path-browserify/index
 var _require = __webpack_require__(/*! ./dados */ "./resources/js/dados.js"),
     dados = _require.dados;
 
-var divLoad = document.getElementById('load');
+var divLoad = document.getElementById("load");
 divLoad.style.display = "flex";
-var STATUS = [{
-  name: 'Não detectável (negativo)',
-  color: '#E85720',
-  icon: 'fa-temperature-high'
-}, {
-  name: 'Positivo',
-  color: '#E21E26',
-  icon: 'fa-check'
-}, {
-  name: 'Tratamento Uti',
-  color: '#BF3646',
-  icon: 'fa-virus'
-}, {
-  name: 'Tratamento Enfermaria',
-  color: '#BF3646',
-  icon: 'fa-virus'
-}, {
-  name: 'Tratamento Monitoramento domiciliar',
-  color: '#BF3646',
-  icon: 'fa-virus'
-}, {
-  name: 'Recuperado',
-  color: '#008F5A',
-  icon: 'fa-smile'
-}, {
-  name: 'Óbito',
-  icon: 'fa-cross',
-  color: '#2B2B29'
-}, {
-  name: "Aguardando Resultado",
-  color: '#E85720',
-  icon: 'fa-temperature-high'
-}];
 var mymap;
-var cities = '';
-var districts = '';
+var cities = "";
+var districts = "";
 var camboriu;
 var store;
 var myLayer;
-axios.get('public/api/map/full').then(function (response) {
+axios.get("public/api/map/full").then(function (response) {
   cities = response.data.cities;
   districts = response.data.districts;
-  camboriu = cities[0].city_coordinates.split(',');
+  camboriu = cities[0].city_coordinates.split(",");
   var quantidade = response.data.data.quantidade;
-  mymap = L.map('mapid', {
-    crs: L.CRS.EPSG3857,
+  mymap = L.map("mapid", {
     zoomControl: false
   }).setView(camboriu, 13);
   L.control.zoom({
-    position: 'bottomright'
+    position: "bottomright"
   }).addTo(mymap);
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZWRhbGljaW8iLCJhIjoiY2thZTVxb3hoMGdldTJybGR0bmRhMzgxeiJ9.2YVn5NR7K2g-mOF8yB4Y_Q', {
+  L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZWRhbGljaW8iLCJhIjoiY2thZTVxb3hoMGdldTJybGR0bmRhMzgxeiJ9.2YVn5NR7K2g-mOF8yB4Y_Q", {
     attribution: ' &copy; <a href="http://www.camboriu.ifc.edu.br/">IFC - Campus Camboriú</a>',
     maxZoom: 17,
-    id: 'mapbox/streets-v11',
+    id: "mapbox/streets-v11",
     tileSize: 512,
     zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiZWRhbGljaW8iLCJhIjoiY2thZTVxb3hoMGdldTJybGR0bmRhMzgxeiJ9.2YVn5NR7K2g-mOF8yB4Y_Q'
+    accessToken: "pk.eyJ1IjoiZWRhbGljaW8iLCJhIjoiY2thZTVxb3hoMGdldTJybGR0bmRhMzgxeiJ9.2YVn5NR7K2g-mOF8yB4Y_Q"
   }).addTo(mymap);
-  proj4.defs('EPSG:31982', '+proj=utm +zone=22 +south +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
   L.Control.Watermark = L.Control.extend({
     onAdd: function onAdd(mymap) {
-      var img = L.DomUtil.create('img');
-      img.src = 'public/img/logoIFC.png';
-      img.style.width = '150px';
+      var img = L.DomUtil.create("img");
+      img.src = "public/img/logoIFC.png";
+      img.style.width = "150px";
       return img;
     },
     onRemove: function onRemove(mymap) {// Nothing to do here
@@ -37624,13 +37589,9 @@ axios.get('public/api/map/full').then(function (response) {
   };
 
   L.control.watermark({
-    position: 'bottomleft'
+    position: "bottomleft"
   }).addTo(mymap);
-  getCoordinates(cities[0].city_name.toLowerCase(), {
-    "color": "#ff7800",
-    "weight": 3,
-    "opacity": 0
-  }, cities[0]);
+  getCoordinates(cities[0].city_name.toLowerCase(), cities[0]);
   store = [response.data.data.quantidade, cities[0].city_name];
   listInfo(response.data.data.quantidade, cities[0].city_name);
   map(response.data.data.locais);
@@ -37642,26 +37603,24 @@ axios.get('public/api/map/full').then(function (response) {
 });
 
 var map = function map(position) {
-  /* position.map(e => {
-      L.circle(e.position.split(','), {
-          color: '#f00',
-          fillOpacity: 0.3,
-          radius: 200,
-       })
-          .bindPopup(`<b>${e.name}</b>`)
-          .addTo(mymap);
-  }) */
+  position.map(function (e) {
+    L.circle(e.position.split(","), {
+      color: "#f00",
+      fillOpacity: 0.3,
+      radius: 200
+    }).bindPopup("<b>".concat(e.name, "</b>")).addTo(mymap);
+  });
 };
 
-document.getElementById('search-district').addEventListener('submit', function (e) {
+document.getElementById("search-district").addEventListener("submit", function (e) {
   e.preventDefault();
   divLoad.style.display = "flex";
-  var district_id = document.getElementById('select-search').value;
+  var district_id = document.getElementById("select-search").value;
   axios.get("public/api/map/".concat(district_id)).then(function (response) {
     if (isEmpty(response.data.data.locais)) {
       console.log(response.data.data.locais);
       response.data.data.locais.map(function (e) {
-        mymap.flyTo(e.position.split(','), 15);
+        mymap.flyTo(e.position.split(","), 15);
       });
       listInfo(response.data.data.quantidade, response.data.data.locais[0].name);
       divLoad.style.display = "none";
@@ -37681,24 +37640,24 @@ function isEmpty(obj) {
   return false;
 }
 
-document.getElementById('menu-info').addEventListener('click', function (e) {
+document.getElementById("menu-info").addEventListener("click", function (e) {
   e.preventDefault();
-  var infoBox = document.getElementById('info-box');
+  var infoBox = document.getElementById("info-box");
 
-  if (infoBox.style.display === 'block') {
-    infoBox.style.display = 'none';
+  if (infoBox.style.display === "block") {
+    infoBox.style.display = "none";
   } else {
-    infoBox.style.display = 'block';
+    infoBox.style.display = "block";
   }
 });
 
 function addhospital() {
-  dados['hospital'].map(function (e) {
+  dados["hospital"].map(function (e) {
     L.marker(e.local.split(","), {
       icon: L.AwesomeMarkers.icon({
-        icon: 'hospital-symbol',
-        prefix: 'fa',
-        markerColor: 'red'
+        icon: "hospital-symbol",
+        prefix: "fa",
+        markerColor: "red"
       })
     }).bindPopup("<b>".concat(e.nome, ".</b><br>Leitos: ").concat(e.leitos, " ")).addTo(mymap);
   });
@@ -37709,42 +37668,59 @@ function OptDistrict(districts) {
   districts.map(function (e) {
     html += "<option value=\"".concat(e.id, "\">").concat(e.district_name, "</option>"); //getCoordinates(e.district_name.toLowerCase(), null, e)
   });
-  document.getElementById('select-search').innerHTML = html;
+  document.getElementById("select-search").innerHTML = html;
 }
 
 function listInfo(infos, name) {
-  var html = "";
+  var tratamento = 0;
+  document.getElementById("recuperado").innerHTML = 0;
+  document.getElementById("obito").innerHTML = 0;
+  document.getElementById("positivo").innerHTML = 0;
+  document.getElementById("uti").innerHTML = 0;
+  document.getElementById("enfermaria").innerHTML = 0;
+  document.getElementById("domiciliar").innerHTML = 0;
   infos.map(function (e) {
-    var a = transformeIcon(e.tipo);
-    html += "<li class=\"list-group-item d-flex justify-content-between align-items-center text-uppercase text-white\"\n        style=\"background: ".concat(a.cor, " ;\">\n                    ").concat(a.html, "\n                    <span class=\"badge  badge-pill font-weight-bold\"><h5>").concat(e.quantidade, "</h5></span>\n                </li>");
-  });
-  document.getElementById('title-info').innerHTML = name;
-  document.getElementById('info-list').innerHTML = html;
-}
+    switch (e.tipo) {
+      case "Recuperado":
+        document.getElementById("recuperado").innerHTML = e.quantidade;
+        break;
 
-function transformeIcon(type) {
-  var saida;
-  STATUS.map(function (e) {
-    if (e.name == type) {
-      saida = {
-        cor: e.color,
-        html: "<h5 class=\"font-weight-bold\"><i class=\"fas ".concat(e.icon, "  mr-2\"></i>").concat(type, "</h5>")
-      };
+      case "Óbito":
+        document.getElementById("obito").innerHTML = e.quantidade;
+        break;
+
+      case "Positivo":
+        document.getElementById("positivo").innerHTML = e.quantidade;
+        break;
+
+      case "Tratamento Uti":
+        document.getElementById("uti").innerHTML = e.quantidade;
+        tratamento += e.quantidade;
+        break;
+
+      case "Tratamento Monitoramento domiciliar":
+        document.getElementById("domiciliar").innerHTML = e.quantidade;
+        tratamento += e.quantidade;
+        break;
+
+      case "Tratamento Enfermaria":
+        document.getElementById("enfermaria").innerHTML = e.quantidade;
+        tratamento += e.quantidade;
+        break;
     }
   });
-  return saida;
+  console.log(tratamento);
+  document.getElementById('title-info').innerHTML = name;
+  document.getElementById("tratamento").innerHTML = tratamento;
 }
 
 function getCoordinates(name) {
   var style = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   var dados = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-  axios.get("public/js/Mapa_Camboriu.geojson").then(function (res) {
+  //axios.get(`public/js/camboriú.geojson`)
+  axios.get("public/js/Mapa_1.geojson").then(function (res) {
     console.log(res.data);
-    L.Proj.geoJson(res.data, {
-      'pointToLayer': function pointToLayer(feature, latlng) {
-        return L.marker(latlng).bindPopup(feature.properties.name);
-      }
-    }).addTo(mymap);
+    L.geoJson(res.data).addTo(mymap);
   })["catch"](function (error) {
     console.log(error.response);
   });
@@ -37769,7 +37745,7 @@ function zoomToFeature(e) {
     if (isEmpty(response.data.data.locais)) {
       console.log(response.data.data.locais);
       response.data.data.locais.map(function (e) {
-        mymap.flyTo(e.position.split(','), 15);
+        mymap.flyTo(e.position.split(","), 15);
       });
       listInfo(response.data.data.quantidade, response.data.data.locais[0].name);
       mymap.fitBounds(e.target.getBounds());
@@ -37791,6 +37767,11 @@ function pointToLayer(feature, latlng) {
     fillOpacity: 0.8
   });
 }
+
+document.getElementById('coleta').addEventListener('click', function (e) {
+  e.preventDefault();
+  axios.get().then(function (res) {});
+});
 
 /***/ }),
 
@@ -37878,8 +37859,8 @@ exports.dados = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/corona/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/corona/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/edalicio/covid-serve/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/edalicio/covid-serve/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

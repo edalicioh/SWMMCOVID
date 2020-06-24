@@ -1,16 +1,15 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
-@import url('https://unpkg.com/leaflet@1.6.0/dist/leaflet.css');
-
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic");
+@import url("https://unpkg.com/leaflet@1.6.0/dist/leaflet.css");
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 #mapid {
-    height: 100vh
+    height: 100vh;
 }
 
 label.required::after {
@@ -40,9 +39,19 @@ label.required::after {
     width: 85%;
     display: none;
     transition: ease-in-out 1.3s;
-
 }
 
+.info-label {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+.info-count{
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 #virus-load {
     font-size: 10rem;
@@ -56,8 +65,6 @@ label.required::after {
     }
 }
 
-
-
 #menu-info {
     display: block;
 }
@@ -69,19 +76,21 @@ label.required::after {
 
     #info-box {
         display: block;
-        width: 25%;
+        width: calc(25% - 40px);
     }
 }
 
-
-.nav-link.dropdown-toggle.btn:hover{
+.nav-link.dropdown-toggle.btn:hover {
     color: white !important;
 }
 
-.nav-link.dropdown-toggle.btn:active{
+.nav-link.dropdown-toggle.btn:active {
     color: white !important;
 }
 
-.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+.navbar-light .navbar-nav .show > .nav-link,
+.navbar-light .navbar-nav .active > .nav-link,
+.navbar-light .navbar-nav .nav-link.show,
+.navbar-light .navbar-nav .nav-link.active {
     color: white !important;
 }
