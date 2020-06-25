@@ -106,6 +106,17 @@ $(function() {
         ...locale
       },
     })
+    $('.date-up').daterangepicker({
+      singleDatePicker: true,
+      autoApply: true,
+      drops: "up",
+      "locale": {
+        "format": "DD/MM/YYYY",
+        ...locale
+      },
+    })
+
+
 
 })
 

@@ -111,6 +111,10 @@ class AttendanceController extends Controller
             $data = implode('-', array_reverse(explode('/', $exp[0]))) . ' ' . $exp[1];
             $all['date'] = date('Y-m-d H:i:s', strtotime($data));
 
+            $discharge_date = implode('-', array_reverse(explode('/', $all['discharge_date'])));
+            $all['discharge_date']  = date('Y-m-d H:i:s', strtotime($discharge_date));
+
+
             $attendance = Attendance::create($all);
 
             if ($request->symptoms != 'null') {

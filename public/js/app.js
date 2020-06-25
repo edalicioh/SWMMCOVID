@@ -37768,11 +37768,6 @@ function pointToLayer(feature, latlng) {
   });
 }
 
-document.getElementById('coleta').addEventListener('click', function (e) {
-  e.preventDefault();
-  axios.get().then(function (res) {});
-});
-
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

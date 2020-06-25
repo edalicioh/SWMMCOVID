@@ -50,6 +50,36 @@ class DistrictSeeder extends Seeder
                 'district_coordinates' => '-27.0218760, -48.6517795',
                 'city_id' => DB::table('cities')->pluck('id')[0]
             ],
+            [
+                'district_name' => 'Cedro',
+                'district_coordinates'    => '-27.0375469,-48.6456812',
+                'city_id' => DB::table('cities')->pluck('id')[0]
+            ],
+            [
+                'district_name' => 'Braço',
+                'district_coordinates'    => '-27.0889515,-48.7464283',
+                'city_id' => DB::table('cities')->pluck('id')[0]
+            ],
+            [
+               'district_name' =>  'Conde Vila Verde',
+               'district_coordinates'    => '-27.0042972,-48.6706478',
+                'city_id' => DB::table('cities')->pluck('id')[0]
+            ],
+           [
+               'district_name' =>  'Lídia Duarte',
+               'district_coordinates'     => '-27.0365745,-48.6544576',
+                'city_id' => DB::table('cities')->pluck('id')[0]
+            ],
+            [
+               'district_name' =>  'Macacos',
+                'district_coordinates'    => '-27.0791186,-48.6858301',
+                'city_id' => DB::table('cities')->pluck('id')[0]
+            ],
+            [
+               'district_name' =>  'São Francisco de Assis',
+               'district_coordinates'     => '-27.0215201,-48.6367202',
+                'city_id' => DB::table('cities')->pluck('id')[0]
+            ],
         ];
 
         District::insert($district);

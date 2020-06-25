@@ -260,10 +260,3 @@ function pointToLayer(feature, latlng) {
     });
 }
 
-document.getElementById('coleta').addEventListener('click', e => {
-    e.preventDefault();
-    axios.get()
-        .then(res => {
-
-        })
-})

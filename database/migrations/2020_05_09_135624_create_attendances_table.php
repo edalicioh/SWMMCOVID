@@ -22,6 +22,7 @@ class CreateAttendancesTable extends Migration
 
             $table->integer('status_attendance')->nullable();
 
+            $table->dateTime('discharge_date')->nullable();
             $table->unsignedBigInteger('hospital_id')->nullable();
             $table->foreign('hospital_id')->references('id')->on('hospitals');
 

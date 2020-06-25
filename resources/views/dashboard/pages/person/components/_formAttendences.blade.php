@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="form-group" id="from-hospital">
-                    <label for="hospital" class="required">Hospital</label>
+                    <label for="hospital" class="required">Local de Acompanhamento</label>
                     <select class="form-control" id="hospital" name="hospital_id">
                         <option value="" disabled selected >Escolha o estado</option>
                         @foreach ($hospitais as $hospital)
@@ -80,6 +80,10 @@
                         @endforeach
                     </select>
                   </div>
+                  <div class="form-group">
+                    <label for="discharge_date">Data da provável alta</label>
+                    <input type="text" class="form-control date-up" id="discharge_date" name="discharge_date" placeholder="">
+                </div>
 
 
             </div>

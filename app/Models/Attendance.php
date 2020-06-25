@@ -19,7 +19,8 @@ class Attendance extends Model
         'annotations',
         'status_attendance',
         'person_id',
-        'hospital_id'
+        'hospital_id',
+        'discharge_date'
     ];
 
     public function person()

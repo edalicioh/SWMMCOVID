@@ -123,11 +123,12 @@ class PersonController extends Controller
             $exp = explode(' ', $all['date']);
             $data = implode('-', array_reverse(explode('/', $exp[0]))) . ' ' . $exp[1];
 
-
             $all['date'] = date('Y-m-d H:i:s', strtotime($data));
 
-            $attendance = Attendance::create($all);
+            $discharge_date = implode('-', array_reverse(explode('/', $all['discharge_date'])));
+            $all['discharge_date']  = date('Y-m-d H:i:s', strtotime($discharge_date));
 
+            $attendance = Attendance::create($all);
 
 
             if ($request->symptoms != 'null') {
@@ -144,10 +145,10 @@ class PersonController extends Controller
             toastr()->success('Dados Salvo com Sucesso :)');
             return redirect('/admin/person');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
             toastr()->error('Erro ao salvar os dados :/ ');
             return back()->withInput();
-            dd($e);
         }
     }
 

@@ -139,6 +139,16 @@ $(function() {
       },
     })
 
+    $('.date-up').daterangepicker({
+      singleDatePicker: true,
+      autoApply: true,
+      drops: "up",
+      "locale": {
+        "format": "DD/MM/YYYY",
+        ...locale
+      },
+    })
+
 })
 
 $(function() {
@@ -150,19 +160,9 @@ $(function() {
     });
 });
 
-document.getElementById('from-hospital').style.display = "none"
+
 document.getElementById('patient').value = false
 
-document.getElementById('person_status').addEventListener('change', e => {
-    const status = e.target.value
-    if (status === '2' || status === '3') {
-        document.getElementById('from-hospital').style.display = "block"
-        document.getElementById('patient').value = true
-    }else{
-        document.getElementById('from-hospital').style.display = "none"
-        document.getElementById('patient').value = false
-    }
-})
 const form = document.getElementById('form-model-company')
 
 form.addEventListener('submit', e => {

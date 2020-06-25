@@ -23,9 +23,7 @@
     </div>
     </form>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <a class=" btn btn-success px-2 shadow-lg  rounded" id="coleta"  href="#">Buscar Local de coleta</a>
-        </li>
+
         @auth
         <li class="nav-item ml-3">
             <a class=" btn btn-success px-2 shadow-lg  rounded"  href="{{ url('/public/login') }}">Entra</a>
@@ -36,7 +34,7 @@
     <div class="flex-center position-ref full-height">
 
         <div class="content">
-@include('components._infoBox')
+            @include('components._infoBox')
             <div id="mapid"></div>
 
         </div>

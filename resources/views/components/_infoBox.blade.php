@@ -3,7 +3,9 @@
         <div class="card-body" style="background: #74759e2e">
             <h2 class="card-title text-center " id="" >Boletim Covid-19</h2>
             <h2 class="card-title text-center " id="title-info" >Camboriu</h2>
-            <h6 class="card-title text-center " id="" >Dados atualizados 11/11/1111</h6>
+            {{--
+                <h6 class="card-title text-center " id="" >Dados atualizados 11/11/1111</h6>
+            --}}
                 <div class="row my-1">
                     <div class="col-10 border-right rounded font-weight-bolder text-white info-label"  style="background: #E21E26;">
                         <i class="fas fa-check mr-2"></i> Positivos
