@@ -40,7 +40,7 @@ class CreatePeopleTable extends Migration
             )->nullable(true);
 
             $table->boolean('patient')->nullable(true);
-            $table->dateTime('first_medical_care');
+            $table->dateTime('first_medical_care')->nullable(true);
 
             $table->unsignedBigInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addresses');

@@ -37604,11 +37604,13 @@ axios.get("public/api/map/full").then(function (response) {
 
 var map = function map(position) {
   position.map(function (e) {
-    L.circle(e.position.split(","), {
-      color: "#f00",
-      fillOpacity: 0.3,
-      radius: 200
-    }).bindPopup("<b>".concat(e.name, "</b>")).addTo(mymap);
+    if (e.position != null) {
+      L.circle(e.position.split(","), {
+        color: "#f00",
+        fillOpacity: 0.3,
+        radius: 200
+      }).bindPopup("<b>".concat(e.name, "</b>")).addTo(mymap);
+    }
   });
 };
 
@@ -37854,8 +37856,8 @@ exports.dados = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/edalicio/covid-serve/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/edalicio/covid-serve/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/corona/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/corona/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

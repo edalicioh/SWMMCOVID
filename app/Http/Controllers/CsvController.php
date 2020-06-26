@@ -29,26 +29,6 @@ class CsvController extends Controller
     public function store(Request $request)
     {
 
-/*
-        0 => "Data"
-        1 => "Nome "
-        2 => "Sexo"
-        3 => "Idade"
-        4 => "Endereço"
-        5 => "Bairro "
-        6 => "cidade"
-        7 => "Telefone"
-        8 => "DATA 1º SINTOMAS"
-        9 => "SINTOMAS"
-        10 => "Comorbidade"
-        11 => "Profissão"
-        12 => "Coleta"
-        13 => "Resultado Laboratorial"
-        14 => "Data da informação do Resultado"
-        15 => "ACOMPANHAMENTO"
-        16 => "DATA DA PROVÁVEL ALTA"
-        17 => "SITUAÇÃO"
- */
         try {
             DB::beginTransaction();
             $file = $request->file('csv_file');
@@ -56,7 +36,7 @@ class CsvController extends Controller
             $data = array_map('str_getcsv', file($path));
 
             $cont = 0;
-            //dd($data[1]);
+            //dd($data[0]);
 
             foreach ($data as $key => $value) {
 
@@ -65,11 +45,34 @@ class CsvController extends Controller
                 $ob = '';
                 $bairroId = '';
                 $cidadeId = '';
-                if ($key > 1) {
-                    $person = Person::where('person_name', '=', $value[1])->get();
+
+
+                if ($key > 0) {
+                    $dados = [
+                        "data"                      => $value[0],
+                        "nome"                      => $value[1],
+                        "sexo"                      => $value[2],
+                        "idade"                     => $value[3],
+                        "endereco"                  => $value[4],
+                        "bairro"                    => $value[5],
+                        "telefone"                  => $value[6],
+                        "data_sintomas"             => $value[7],
+                        "sintomas"                  => $value[8],
+                        "Comorbidade"               => $value[9],
+                        "profissao"                 => $value[10],
+                        "observaoes"                => $value[11],
+                        "coleta"                    => $value[12],
+                        "resultadoLaboratorial"     => $value[13],
+                        "dataInformacaoResultado"   => $value[14],
+                        "aconpanhamento"            => $value[15],
+                        "data_alta"                 => $value[16],
+                        "status"                    => $value[17],
+                    ];
+
+                    $person = Person::where('person_name', '=', $dados['nome'])->get();
                     if (count($person) == 0) {
-                        if ($value[4]) {
-                            $end = explode(', ', $value[4]);
+                        if ($dados['endereco']) {
+                            $end = explode(', ', $dados['endereco']);
 
                             $rua = $end[0];
                             if (isset($end[1])) {
@@ -93,9 +96,9 @@ class CsvController extends Controller
                         }
 
 
-                        if ($value[5]) {
+                        if ($dados['bairro']) {
 
-                            $s = District::where('district_name', 'LIKE', '%' . $value[5] . '%')->get();
+                            $s = District::where('district_name', 'LIKE', '%' . $dados['bairro'] . '%')->get();
 
                             if (count($s) > 0) {
                                 $bairroId = $s[0]->id;
@@ -103,14 +106,14 @@ class CsvController extends Controller
                             }
                             else {
                                 $s = District::where('district_name', 'LIKE', '%' . 'Não informado' . '%')->get();
-                                $bairroId = $s[0]->id;
-                                $cidadeId = $s[0]->city_id;
+                                $bairroId = null;
+                                $cidadeId = null;
                             }
                         }
                         else {
                             $s = District::where('district_name', 'LIKE', '%' . 'Não informado' . '%')->get();
-                            $bairroId = $s[0]->id;
-                            $cidadeId = $s[0]->city_id;
+                            $bairroId = null;
+                            $cidadeId = null;
                         }
 
                         $address = new Address();
@@ -124,80 +127,36 @@ class CsvController extends Controller
                         $addressId = $address->id;
 
                         $all = [
-                            'person_name' => $value[1] ? $value[1] : 'nao informado',
-                            'gender' => $value[2] ? $value[2] : 'O',
-                            'age' => $value[3] && $value[3] != "Não informado" && $value[3] != "" ? intval($value[3]) : 00,
-                            'phone' => $value[7] && $value[7] != "Não informado" ? $value[7] : '',
+                            'person_name' => $dados['nome'] ? $dados['nome'] : 'Não informado',
+                            'gender' => $dados['sexo'] ? $dados['sexo'] : 'O',
+                            'age' => $dados['idade'] && $dados['idade'] != "Não informado" && $dados['idade'] != "" ? intval($dados['idade']) : 0,
+                            'phone' => $dados['telefone'] && $dados['telefone'] != "Não informado" ? $dados['telefone'] : null,
                             'work_status' => 1,
                             'patient' => 1,
-                            'person_status' => $value[16] ? $this->validaStatus($value[16]) : 0,
-                            'first_medical_care' => $value[8] && $value[8] != "******" && $value[8] != "Não informado" ? date('Y-m-d H:i:s', strtotime($value[8])) : date('Y-m-d H:i:s'),
+                            'person_status' => $dados['status'] ? $this->validaStatus($dados['status']) : 0,
+                            'first_medical_care' => $dados['data_sintomas'] ? date('Y-m-d H:i:s', strtotime($dados['data_sintomas'])) : null,
                             'address_id' => $addressId,
                             'user_id' => Auth::user()->id,
                         ];
-
                         $person = Person::create($all);
 
-                        $atte = [
-                            'date' => $value[0] ? date('Y-m-d H:i:s', strtotime($value[0])) : date('Y-m-d H:i:s'),
-                            'exam_result' => $value[13] ? $this->validaExm($value[13]) : 4,
-                            'status_attendance' => $value[17] ? $this->validaStatus($value[17]) : 0,
-                            'person_id' => $person->id,
-                        ];
-
-                        $attendance = Attendance::create($atte);
-
-
-                        $sintomas = explode(', ', $value[9]);
-                        $ass = [];
-                        foreach ($sintomas as $Skey => $sintoma) {
-                            $sintoma = Symptom::where('symptom_description', 'LIKE', '%' . $sintoma . '%')->get();
-
-
-                            if (isset($sintoma[0])) {
-                                $ass[] = $sintoma[0]->id;
-                            }
-                        }
-                        $attendance->symptoms()->sync($ass);
+                        $this->attendance($dados , $person);
 
                     }
                     else if (count($person) == 1) {
-                        $att = Attendance::where('date', date('Y-m-d H:i:s', strtotime($value[0])))->get();
+                        $att = Attendance::where('date', date('Y-m-d H:i:s', strtotime($dados['data'])))->get();
 
                         if(count($att) == 0){
 
-
-                            $atte = [
-                                'date' => $value[0] ? date('Y-m-d H:i:s', strtotime($value[0])) : date('Y-m-d H:i:s'),
-                                'exam_result' => $value[13] ? $this->validaExm($value[13]) : 4,
-                                'status_attendance' => $value[17] ? $this->validaStatus($value[17]) : 0,
-                                'person_id' => $person[0]->id,
-                            ];
-
-
                             $all = [
                                 'patient' => 1,
-                                'person_status' => $value[17] ? $this->validaStatus($value[17]) : 0,
+                                'person_status' => $dados['status'] ? $this->validaStatus($value['status']) : 0,
                             ];
 
                             Person::where('id', $person[0]->id)->update($all);
 
+                            $this->attendance($dados , $person);
 
-                            $attendance = Attendance::create($atte);
-
-
-                            $sintomas = explode(', ', $value[9]);
-                            $ass = [];
-
-                            foreach ($sintomas as $Skey => $sintoma) {
-                                $sintoma = Symptom::where('symptom_description', 'LIKE', '%' . $sintoma . '%')->get();
-
-
-                                if (isset($sintoma[0])) {
-                                    $ass[] = $sintoma[0]->id;
-                                }
-                            }
-                            $attendance->symptoms()->sync($ass);
                         }
                     }
                 }
@@ -211,7 +170,6 @@ class CsvController extends Controller
         catch (\Exception $e) {
             dd($e);
             DB::rollBack();
-
             toastr()->error('Erro ao salvar os dados :/ ');
             return back()->withInput();
         }
@@ -230,6 +188,8 @@ class CsvController extends Controller
             case 'não detectável':
                 return 1;
             case 'confirmado':
+                return 2;
+            case 'confirmado - TR':
                 return 2;
             default:
                 return 4;
@@ -254,6 +214,34 @@ class CsvController extends Controller
             default:
                 return 0;
         }
+    }
+
+    protected function attendance($dados, $person )
+    {
+        $atte = [
+            'date' => $dados['data'] ? date('Y-m-d H:i:s', strtotime($dados['data'])) : null,
+            'exam_result' => $dados['resultadoLaboratorial'] ? $this->validaExm($dados['resultadoLaboratorial']) : 4,
+            'status_attendance' => $dados['status'] ? $this->validaStatus($dados['status']) : 0,
+            'discharge_date' =>  $dados['data_alta'] ? date('Y-m-d H:i:s', strtotime($dados['data_alta'])) : null ,
+            'person_id' => $person->id,
+        ];
+
+
+
+        $attendance = Attendance::create($atte);
+
+
+        $sintomas = explode(', ', $dados['sintomas']);
+        $ass = [];
+        foreach ($sintomas as $Skey => $sintoma) {
+            $sintoma = Symptom::where('symptom_description', 'LIKE', '%' . $sintoma . '%')->get();
+
+
+            if (isset($sintoma[0])) {
+                $ass[] = $sintoma[0]->id;
+            }
+        }
+        $attendance->symptoms()->sync($ass);
     }
 
 

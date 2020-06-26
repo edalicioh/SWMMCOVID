@@ -15,7 +15,7 @@ let myLayer;
 
 axios
     .get("public/api/map/full")
-    .then(function(response) {
+    .then(function (response) {
         cities = response.data.cities;
         districts = response.data.districts;
         camboriu = cities[0].city_coordinates.split(",");
@@ -46,18 +46,18 @@ axios
         ).addTo(mymap);
 
         L.Control.Watermark = L.Control.extend({
-            onAdd: function(mymap) {
+            onAdd: function (mymap) {
                 var img = L.DomUtil.create("img");
                 img.src = "public/img/logoIFC.png";
                 img.style.width = "150px";
                 return img;
             },
-            onRemove: function(mymap) {
+            onRemove: function (mymap) {
                 // Nothing to do here
             }
         });
 
-        L.control.watermark = function(opts) {
+        L.control.watermark = function (opts) {
             return new L.Control.Watermark(opts);
         };
 
@@ -73,19 +73,21 @@ axios
         addhospital();
         divLoad.style.display = "none";
     })
-    .catch(function(error) {
+    .catch(function (error) {
         console.log(error);
     });
 
 const map = position => {
     position.map(e => {
-        L.circle(e.position.split(","), {
-            color: "#f00",
-            fillOpacity: 0.3,
-            radius: 200
-        })
-            .bindPopup(`<b>${e.name}</b>`)
-            .addTo(mymap);
+        if (e.position != null) {
+            L.circle(e.position.split(","), {
+                color: "#f00",
+                fillOpacity: 0.3,
+                radius: 200
+            })
+                .bindPopup(`<b>${e.name}</b>`)
+                .addTo(mymap);
+        }
     });
 };
 
@@ -95,7 +97,7 @@ document.getElementById("search-district").addEventListener("submit", e => {
 
     const district_id = document.getElementById("select-search").value;
 
-    axios.get(`public/api/map/${district_id}`).then(function(response) {
+    axios.get(`public/api/map/${district_id}`).then(function (response) {
         if (isEmpty(response.data.data.locais)) {
             console.log(response.data.data.locais);
 
@@ -208,7 +210,7 @@ function getCoordinates(name, style = null, dados = null) {
             console.log(res.data);
             L.geoJson(res.data).addTo(mymap);
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log(error.response);
         });
 }
@@ -229,7 +231,7 @@ function zoomToFeature(e) {
 
     const district_id = e.target.feature.data.id;
 
-    axios.get(`public/api/map/${district_id}`).then(function(response) {
+    axios.get(`public/api/map/${district_id}`).then(function (response) {
         if (isEmpty(response.data.data.locais)) {
             console.log(response.data.data.locais);
 

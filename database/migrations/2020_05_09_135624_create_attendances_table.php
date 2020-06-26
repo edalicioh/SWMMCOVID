@@ -16,7 +16,7 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable();
             $table->string('exam_result')->nullable();
             $table->text('annotations')->nullable(true);
 
