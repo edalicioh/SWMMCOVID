@@ -13,18 +13,74 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        /*, ; ; r.bw@hotmail.com;
+        /*
 
-                Juliana => r.bw@hotmail.com,
-                Cleonice => cleonice.beppler@ifc.edu.br,
-                Adelson => adelsonbc@gmail.com,
-                Leandro => leandro.mondini@ifc.edu.br,
+                nome  => Cleonice
+                email => cleonice.beppler@ifc.edu.br
+                senha => cleonice,
+
+                nome  => Adelson
+                email => adelsonbc@gmail.com
+                senha => adelson,
+
+                nome  => Amanda Thais da Costa
+                email => amandathais@gmail.com
+                senha => amanda,
+
+                nome  => Núbia Cantalixto de Melo Alves
+                email => cantalixto@gmail.com
+                senha => cantalixto,
+
+                nome  => Margarete Cadore
+                email => margaretecadore@gmail.com
+                senha => margarete,
+
+		nome => Juliana Chayanne de Oliveira
+		email => r.bw@hotmail.com
+		senha => juliana
+
         */
         $users = [
             [
-                'user_name' => 'Admin',
-                'email' => 'admin@admin.com',
-                'password' => bcrypt('admin'),
+                'user_name' => 'Edalicio Heinzen',
+                'email' => 'edalicio@outlook.com',
+                'password' => bcrypt('edalicio'),
+                'companies_id' =>  DB::table('companies')->pluck('id')[0]
+            ],
+            [
+                'user_name' => 'Juliana Chayanne de Oliveira',
+                'email' => 'r.bw@hotmail.com',
+                'password' => bcrypt('juliana'),
+                'companies_id' =>  DB::table('companies')->pluck('id')[0]
+            ],
+            [
+                'user_name' => 'Cleonice',
+                'email' => 'cleonice.beppler@ifc.edu.br',
+                'password' => bcrypt('cleonice'),
+                'companies_id' =>  DB::table('companies')->pluck('id')[0]
+            ],
+            [
+                'user_name' => 'Adelson',
+                'email' => 'adelsonbc@gmail.com',
+                'password' => bcrypt('adelson'),
+                'companies_id' =>  DB::table('companies')->pluck('id')[0]
+            ],
+            [
+                'user_name' => 'Amanda Thais da Costa',
+                'email' => 'amandathais@gmail.com',
+                'password' => bcrypt('amanda'),
+                'companies_id' =>  DB::table('companies')->pluck('id')[0]
+            ],
+            [
+                'user_name' => 'Núbia Cantalixto de Melo Alves',
+                'email' => 'cantalixto@gmail.com',
+                'password' => bcrypt('cantalixto'),
+                'companies_id' =>  DB::table('companies')->pluck('id')[0]
+            ],
+            [
+                'user_name' => 'Margarete Cadore',
+                'email' => 'margaretecadore@gmail.com',
+                'password' => bcrypt('margarete'),
                 'companies_id' =>  DB::table('companies')->pluck('id')[0]
             ],
         ];

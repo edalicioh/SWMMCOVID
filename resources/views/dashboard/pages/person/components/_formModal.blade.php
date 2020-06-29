@@ -7,7 +7,7 @@
     </div>
     <div class="row  pb-3 text-right">
         <div class="col-md-12">
-            <button  type="submit" class="btn btn-primary ">Salvar</button>
+            <button  class="btn btn-primary " id="form-company">Salvar</button>
         </div>
     </div>
 </form>

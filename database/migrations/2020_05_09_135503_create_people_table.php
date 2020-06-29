@@ -22,6 +22,7 @@ class CreatePeopleTable extends Migration
             $table->string('phone')->nullable(true);
             $table->dateTime('birth_date')->nullable(true);
             $table->integer('age')->nullable(true);
+            $table->boolean('excluded')->nullable(true);
             $table->integer('work_status')->comment('
                 funcionário público => 0
                 setor médico => 1

@@ -7,6 +7,12 @@
 @stop
 
 @section('content')
+<div class="row">
+    <div class="col">
+        <div id="csv" class="mb-3">
+        </div>
+    </div>
+</div>
 <div class="pb-5">
     <table id="people-table" class="table table-striped table-bordered "></table>
 </div>
@@ -18,10 +24,10 @@
 
 
 
-$('#people-table').DataTable({
+var table =  $('#people-table').DataTable({
     processing: true,
     serverSide: true,
-
+    lengthMenu:[[10, 25, 50, -1], [10, 25, 50, "All"]],
     ajax: "{!! route('person.index') !!}",
 
     columns: [
@@ -53,6 +59,25 @@ $('#people-table').DataTable({
             "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
     }
 });
+
+
+new $.fn.dataTable.Buttons( table, {
+    name: 'commands',
+
+    buttons: [
+        {
+            extend: 'excelHtml5',
+            autoFilter: true,
+            text : '<i class="fas fa-download"></i> Baixar Excel',
+            filename: 'lista_de_Contatos',
+            exportOptions: {
+                columns: [ 0, 1, 2, 3 ],
+            },
+        }
+    ]
+});
+
+table.buttons( 0, null ).containers().appendTo( '#csv' );
 
 </script>
 @stop

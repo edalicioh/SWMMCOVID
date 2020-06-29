@@ -27,7 +27,8 @@ class Person extends Model
         'user_id',
         'company_id',
         'contaminations_id',
-        'hospital_id'
+        'hospital_id',
+        'excluded'
     ];
 
     public function contamination()

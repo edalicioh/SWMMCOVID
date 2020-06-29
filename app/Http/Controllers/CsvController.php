@@ -106,14 +106,14 @@ class CsvController extends Controller
                             }
                             else {
                                 $s = District::where('district_name', 'LIKE', '%' . 'Não informado' . '%')->get();
-                                $bairroId = null;
-                                $cidadeId = null;
+                                $bairroId = $s[0]->id;
+                                $cidadeId = $s[0]->city_id;
                             }
                         }
                         else {
                             $s = District::where('district_name', 'LIKE', '%' . 'Não informado' . '%')->get();
-                            $bairroId = null;
-                            $cidadeId = null;
+                            $bairroId = $s[0]->id;
+                            $cidadeId = $s[0]->city_id;
                         }
 
                         $address = new Address();
@@ -139,26 +139,9 @@ class CsvController extends Controller
                             'user_id' => Auth::user()->id,
                         ];
                         $person = Person::create($all);
-
                         $this->attendance($dados , $person);
-
                     }
-                    else if (count($person) == 1) {
-                        $att = Attendance::where('date', date('Y-m-d H:i:s', strtotime($dados['data'])))->get();
 
-                        if(count($att) == 0){
-
-                            $all = [
-                                'patient' => 1,
-                                'person_status' => $dados['status'] ? $this->validaStatus($value['status']) : 0,
-                            ];
-
-                            Person::where('id', $person[0]->id)->update($all);
-
-                            $this->attendance($dados , $person);
-
-                        }
-                    }
                 }
             }
 
@@ -210,7 +193,7 @@ class CsvController extends Controller
             case 'uti':
                 return 2;
             case 'enfermaria':
-                return 2;
+                return 3;
             default:
                 return 0;
         }

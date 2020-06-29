@@ -36,7 +36,7 @@ class DistrictSeeder extends Seeder
                 'city_id' => DB::table('cities')->pluck('id')[0]
             ],
             [
-                'district_name' => 'Tabuleiro',
+                'district_name' => 'Taboleiro',
                 'district_coordinates' => '-27.0080149,-48.6520969',
                 'city_id' => DB::table('cities')->pluck('id')[0]
             ],

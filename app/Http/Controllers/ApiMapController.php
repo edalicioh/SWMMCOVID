@@ -24,6 +24,7 @@ class ApiMapController extends Controller
         $people = DB::table('people')
             ->join('addresses', 'people.address_id', '=', 'addresses.id')
             ->leftJoin('districts' , 'addresses.district_id' ,'=' ,'districts.id')
+            ->where('excluded' ,'=' , null)
             ->select('person_status' , 'districts.*')
             ->get();
 
@@ -54,6 +55,7 @@ class ApiMapController extends Controller
             ->join('addresses', 'people.address_id', '=', 'addresses.id')
             ->leftJoin('districts' , 'addresses.district_id' ,'=' ,'districts.id')
             ->where('districts.id' , '=' , $district_id)
+            ->where('excluded' ,'=' , null)
             ->select('person_status' , 'districts.*')
             ->get();
         return json_encode(['data' => $this->groupByPeople($people)]);

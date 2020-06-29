@@ -40,6 +40,7 @@ class PersonController extends Controller
                 ->rightJoin('attendances', 'people.id', '=', 'attendances.person_id')
                 ->leftJoin('districts', 'addresses.district_id', '=', 'districts.id')
                 ->select('person_name', 'person_status', 'district_name', 'phone', 'person_id')
+                ->where('excluded' ,'=' , null)
                 ->get()->groupBy('person_id');
             foreach ($people as $key => $value) {
                 $people[$key] = [
@@ -51,7 +52,7 @@ class PersonController extends Controller
                 ];
             }
             return DataTables::of($people)->make(true);
-       }
+        }
         return view('dashboard/pages/person/index');
     }
 
@@ -117,7 +118,7 @@ class PersonController extends Controller
 
             $person = Person::create($all);
 
-            $all['person_id'] = $person->id ;
+            $all['person_id'] = $person->id;
             $all['status_attendance'] = $all['person_status'];
 
             $exp = explode(' ', $all['date']);
@@ -201,6 +202,7 @@ class PersonController extends Controller
         $states = DB::table('states')->get();
         $symptoms = DB::table('symptoms')->get();
         $indicadors = DB::table('indicadors');
+        $professions = Profession::all();
         $diseases = Disease::get();
 
 
@@ -215,7 +217,8 @@ class PersonController extends Controller
                 'states',
                 'indicadors',
                 'symptoms',
-                'diseases'
+                'diseases',
+                'professions'
             ])
         );
     }
@@ -233,14 +236,14 @@ class PersonController extends Controller
 
             DB::beginTransaction();
 
-                $address = Address::where('id',  $person->address_id)->first();
-                (new AddressController())->update($request,$address);
+            $address = Address::where('id',  $person->address_id)->first();
+            (new AddressController())->update($request, $address);
 
-                $person->gender         = $request->gender;
-                $person->phone          = $request->phone;
-                $person->age            = $request->age;
-                $person->work_status    = $request->work_status;
-                $person->update();
+            $person->gender         = $request->gender;
+            $person->phone          = $request->phone;
+            $person->age            = $request->age;
+            $person->work_status    = $request->work_status;
+            $person->update();
 
             DB::commit();
             toastr()->success('Dados Salvo com Sucesso :)');
@@ -261,7 +264,7 @@ class PersonController extends Controller
      */
     public function destroy(Person $person)
     {
-        //
+        dd($person);
     }
 
     protected function validaStatus($status)

@@ -22,16 +22,11 @@
     <div class="row">
         <div class="col-md-6">
             @include('dashboard.pages.person.components._formPerson')
-            @if(!isset($person) )
-                @include('dashboard.pages.person.components._formWork')
-
-            @endif
+            @include('dashboard.pages.person.components._formWork')
         </div>
         <div class="col-md-6">
             @include('dashboard.pages.person.components._formAddress')
-            @if(!isset($person) )
-                @include('dashboard.pages.person.components._fromContaminations')
-            @endif
+            @include('dashboard.pages.person.components._fromContaminations')
         </div>
     </div>
     @if(!isset($person) )
@@ -161,32 +156,31 @@ $(function() {
 });
 
 
-document.getElementById('patient').value = false
 
-const form = document.getElementById('form-model-company')
 
-form.addEventListener('submit', e => {
-    e.preventDefault()
-    const data = {
+$(function() {
+    const form = document.getElementById('form-model-company')
 
-       'professions_description' : form.elements.professions_description.value,
-
-    }
-
-    axios.post('{{ route('profession.store') }}' , data)
-    .then(response => {
-        console.log(response);
-
-        if ( response.data ) {
-            let html = '<option value="" disabled selected >Escolha</option>'
-
-            response.data.map(elem => {
-                html += `<option value="${elem.id}">${elem.professions_description}</option>`
-            })
-            html += '<option value="não informado" >não informado</option>'
-            document.getElementById('professions_description').innerHTML = html
-            $('#exampleModal').modal('hide')
+    $('#form-company').click( e => {
+        e.preventDefault()
+        const data = {
+        'professions_description' : form.elements.professions_description.value,
+        '_token' : form.elements._token.value,
         }
+
+        axios.post('{{ route('profession.store') }}' , data)
+        .then(response => {
+            console.log(response);
+
+            if ( response.data ) {
+                let html = '<option value="" disabled selected >Escolha</option>'
+                response.data.map(elem => {
+                    html += `<option value="${elem.id}">${elem.professions_description}</option>`
+                })
+                document.getElementById('professions_description').innerHTML = html
+                $('#exampleModal').modal('hide')
+            }
+        })
     })
 })
 

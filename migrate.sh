@@ -6,3 +6,5 @@ php artisan db:seed --class=AddressesSeeder
 php artisan db:seed --class=CompaniesSeeder
 php artisan db:seed --class=UserSeeder
 php artisan db:seed --class=SymptomSeeder
+php artisan db:seed --class=DiseaseSeeder
+php artisan db:seed --class=ProfessionSeeder
