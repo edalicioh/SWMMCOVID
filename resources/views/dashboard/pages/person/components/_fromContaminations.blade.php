@@ -9,8 +9,8 @@
         value="{{  old('first_medical_care') }}{{
           isset($person->first_medical_care)
             ? date( 'Y-m-d' , strtotime($person->first_medical_care)) : ''
-          }}"
-        {{ isset($person->first_medical_care) ? 'disabled'  : '' }}>
+          }}">
+
         @if ($errors->has('first_medical_care'))
         <div class="invalid-feedback">
             {{ $errors->first('first_medical_care') }}

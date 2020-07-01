@@ -107,9 +107,6 @@ class AttendanceController extends Controller
             $all = $request->all();
             $all['person_id'] = $request->person_id ;
 
-            $exp = explode(' ', $all['date']);
-            $data = implode('-', array_reverse(explode('/', $exp[0]))) . ' ' . $exp[1];
-            $all['date'] = date('Y-m-d H:i:s', strtotime($data));
 
             $discharge_date = implode('-', array_reverse(explode('/', $all['discharge_date'])));
             $all['discharge_date']  = date('Y-m-d H:i:s', strtotime($discharge_date));

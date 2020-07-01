@@ -25,6 +25,7 @@ class ApiMapController extends Controller
             ->join('addresses', 'people.address_id', '=', 'addresses.id')
             ->leftJoin('districts' , 'addresses.district_id' ,'=' ,'districts.id')
             ->where('excluded' ,'=' , null)
+            ->where('person_status' ,'!=' , 0)
             ->select('person_status' , 'districts.*')
             ->get();
 

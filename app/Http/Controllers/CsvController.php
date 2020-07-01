@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class CsvController extends Controller
 {
-
     public function create()
     {
         return view('dashboard/pages/csv/create');
@@ -28,6 +27,8 @@ class CsvController extends Controller
      */
     public function store(Request $request)
     {
+
+
 
         try {
             DB::beginTransaction();
@@ -81,16 +82,13 @@ class CsvController extends Controller
                                     $numero = intval($num[0]);
                                     array_shift($num);
                                     $ob = implode(' ', $num);
-                                }
-                                else {
+                                } else {
                                     $numero = 00;
                                 }
-                            }
-                            else {
+                            } else {
                                 $numero = 00;
                             }
-                        }
-                        else {
+                        } else {
                             $rua = '00';
                             $numero = 00;
                         }
@@ -103,14 +101,12 @@ class CsvController extends Controller
                             if (count($s) > 0) {
                                 $bairroId = $s[0]->id;
                                 $cidadeId = $s[0]->city_id;
-                            }
-                            else {
+                            } else {
                                 $s = District::where('district_name', 'LIKE', '%' . 'Não informado' . '%')->get();
                                 $bairroId = $s[0]->id;
                                 $cidadeId = $s[0]->city_id;
                             }
-                        }
-                        else {
+                        } else {
                             $s = District::where('district_name', 'LIKE', '%' . 'Não informado' . '%')->get();
                             $bairroId = $s[0]->id;
                             $cidadeId = $s[0]->city_id;
@@ -126,6 +122,7 @@ class CsvController extends Controller
                         $address->save();
                         $addressId = $address->id;
 
+
                         $all = [
                             'person_name' => $dados['nome'] ? $dados['nome'] : 'Não informado',
                             'gender' => $dados['sexo'] ? $dados['sexo'] : 'O',
@@ -138,10 +135,11 @@ class CsvController extends Controller
                             'address_id' => $addressId,
                             'user_id' => Auth::user()->id,
                         ];
-                        $person = Person::create($all);
-                        $this->attendance($dados , $person);
-                    }
 
+                        $person = Person::create($all);
+
+                        $this->attendance($dados, $person);
+                    }
                 }
             }
 
@@ -149,8 +147,7 @@ class CsvController extends Controller
             DB::commit();
             toastr()->success('Dados Salvo com Sucesso :)');
             return redirect('/admin/person');
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
             toastr()->error('Erro ao salvar os dados :/ ');
@@ -199,13 +196,13 @@ class CsvController extends Controller
         }
     }
 
-    protected function attendance($dados, $person )
+    protected function attendance($dados, $person)
     {
         $atte = [
             'date' => $dados['data'] ? date('Y-m-d H:i:s', strtotime($dados['data'])) : null,
             'exam_result' => $dados['resultadoLaboratorial'] ? $this->validaExm($dados['resultadoLaboratorial']) : 4,
             'status_attendance' => $dados['status'] ? $this->validaStatus($dados['status']) : 0,
-            'discharge_date' =>  $dados['data_alta'] ? date('Y-m-d H:i:s', strtotime($dados['data_alta'])) : null ,
+            'discharge_date' =>  $dados['data_alta'] ? date('Y-m-d H:i:s', strtotime($dados['data_alta'])) : null,
             'person_id' => $person->id,
         ];
 
@@ -226,6 +223,4 @@ class CsvController extends Controller
         }
         $attendance->symptoms()->sync($ass);
     }
-
-
 }

@@ -37,8 +37,8 @@ class PersonController extends Controller
 
             $people = DB::table('people')
                 ->join('addresses', 'people.address_id', '=', 'addresses.id')
-                ->rightJoin('attendances', 'people.id', '=', 'attendances.person_id')
-                ->leftJoin('districts', 'addresses.district_id', '=', 'districts.id')
+                ->join('attendances', 'people.id', '=', 'attendances.person_id')
+                ->join('districts', 'addresses.district_id', '=', 'districts.id')
                 ->select('person_name', 'person_status', 'district_name', 'phone', 'person_id')
                 ->where('excluded' ,'=' , null)
                 ->get()->groupBy('person_id');
@@ -109,7 +109,7 @@ class PersonController extends Controller
             $all['address_id'] = (new AddressController())->store($request);
             $all['contaminations_id'] = (new ContaminationController())->store($request);
             $all['user_id'] =  Auth::user()->id;
-            $data = implode('-', array_reverse(explode('/', $request->birth_date)));
+            $data = $request->birth_date ? implode('-', array_reverse(explode('/', $request->birth_date))) : null;
             $all['birth_date'] = date('Y-m-d H:i:s', strtotime($data));
             $data = implode('-', array_reverse(explode('/', $request->first_medical_care)));
             $all['first_medical_care'] = date('Y-m-d H:i:s', strtotime($data));
@@ -121,13 +121,9 @@ class PersonController extends Controller
             $all['person_id'] = $person->id;
             $all['status_attendance'] = $all['person_status'];
 
-            $exp = explode(' ', $all['date']);
-            $data = implode('-', array_reverse(explode('/', $exp[0]))) . ' ' . $exp[1];
 
-            $all['date'] = date('Y-m-d H:i:s', strtotime($data));
-
-            $discharge_date = implode('-', array_reverse(explode('/', $all['discharge_date'])));
-            $all['discharge_date']  = date('Y-m-d H:i:s', strtotime($discharge_date));
+            $discharge_date = $all['discharge_date'] ? implode('-', array_reverse(explode('/', $all['discharge_date']))) : null;
+            $all['discharge_date']  = $discharge_date ? date('Y-m-d H:i:s', strtotime($discharge_date)) : null;
 
             $attendance = Attendance::create($all);
 
@@ -202,8 +198,8 @@ class PersonController extends Controller
         $states = DB::table('states')->get();
         $symptoms = DB::table('symptoms')->get();
         $indicadors = DB::table('indicadors');
-        $professions = Profession::all();
         $diseases = Disease::get();
+        $professions = Profession::all();
 
 
         return view(

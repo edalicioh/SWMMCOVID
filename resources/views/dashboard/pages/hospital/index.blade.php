@@ -34,7 +34,7 @@ $('#people-table').DataTable({
             "render": (data, type, row, meta) => {
                 let edit = '{{ url("admin/hospital/id/edit") }}';
 
-                edit = edit.replace('id', row.id);
+                edit = edit.replace('/id/', "/" + row.id + "/");
 
                 return `
                     <a href="${edit}" class="btn btn-xs btn-info"> <i class="fa fa-edit"></i> Editar</a>

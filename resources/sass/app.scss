@@ -59,6 +59,7 @@ label.required::after {
     animation: rotate 2.5s linear infinite;
 }
 
+
 @keyframes rotate {
     to {
         transform: rotate(360deg);
@@ -67,6 +68,21 @@ label.required::after {
 
 #menu-info {
     display: block;
+}
+
+@media (max-width: 768px) {
+    .graf{
+
+        width: 90%;
+    }
+    .li-graf{
+        position: absolute !important;
+        z-index: 10000 !important;
+        top: 56px !important;
+        left: 0 !important;
+        width: 100% !important;
+
+    }
 }
 
 @media (min-width: 768px) {

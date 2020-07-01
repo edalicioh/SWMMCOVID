@@ -14,7 +14,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="background-color: transparent !important ;" >
     <button type="button" class="btn btn-light" id="menu-info"><i class="fas fa-bars"></i></button>
-    <form  id="search-district" class="col-8 col-md-3 mr-auto">
+    <form  id="search-district" class="col-10 col-md-3 mr-auto">
     <div class="input-group" >
         <select class="custom-select" id="select-search"></select>
     <div class="input-group-append">
@@ -23,7 +23,9 @@
     </div>
     </form>
     <ul class="navbar-nav ml-auto">
-
+        <li class="nav-item ml-3 li-graf" >
+            <a class=" btn btn-success px-2 shadow-lg  rounded graf"  href="{{ url('/public/chart') }}" >Graficos do Covid-19</a>
+        </li>
         @auth
         <li class="nav-item ml-3">
             <a class=" btn btn-success px-2 shadow-lg  rounded"  href="{{ url('/public/login') }}">Entra</a>

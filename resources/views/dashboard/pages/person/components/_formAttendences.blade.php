@@ -35,10 +35,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="date">Data do atendimento</label>
-                    <input type="text" class="form-control date-time-hour" id="date" name="date" placeholder="">
-                </div>
+               
                 <div class="form-group">
                     <label for="annotations">Anotações</label>
                     <textarea class="form-control" id="annotations" name="annotations" rows="3"></textarea>

@@ -143,7 +143,7 @@ function addhospital() {
                 markerColor: "red"
             })
         })
-            .bindPopup(`<b>${e.nome}.</b><br>Leitos: ${e.leitos} `)
+            .bindPopup(`<b>${e.nome}.</b>`)
             .addTo(mymap);
     });
 }
