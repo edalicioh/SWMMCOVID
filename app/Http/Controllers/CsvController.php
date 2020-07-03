@@ -36,7 +36,6 @@ class CsvController extends Controller
             $path = $file->getRealPath();
             $data = array_map('str_getcsv', file($path));
 
-            $cont = 0;
             //dd($data[0]);
 
             foreach ($data as $key => $value) {
@@ -46,32 +45,33 @@ class CsvController extends Controller
                 $ob = '';
                 $bairroId = '';
                 $cidadeId = '';
-
+                $person = '';
 
                 if ($key > 0) {
-                    $dados = [
-                        "data"                      => $value[0],
-                        "nome"                      => $value[1],
-                        "sexo"                      => $value[2],
-                        "idade"                     => $value[3],
-                        "endereco"                  => $value[4],
-                        "bairro"                    => $value[5],
-                        "telefone"                  => $value[6],
-                        "data_sintomas"             => $value[7],
-                        "sintomas"                  => $value[8],
-                        "Comorbidade"               => $value[9],
-                        "profissao"                 => $value[10],
-                        "observaoes"                => $value[11],
-                        "coleta"                    => $value[12],
-                        "resultadoLaboratorial"     => $value[13],
-                        "dataInformacaoResultado"   => $value[14],
-                        "aconpanhamento"            => $value[15],
-                        "data_alta"                 => $value[16],
-                        "status"                    => $value[17],
-                    ];
 
-                    $person = Person::where('person_name', '=', $dados['nome'])->get();
+                    $dados = [
+                        "data"                      => isset($value[0]) ? $value[0] : '',
+                        "nome"                      => isset($value[1]) ? $value[1] : '',
+                        "sexo"                      => isset($value[2]) ? $value[2] : '',
+                        "idade"                     => isset($value[3]) ? $value[3] : '',
+                        "endereco"                  => isset($value[4]) ? $value[4] : '',
+                        "bairro"                    => isset($value[5]) ? $value[5] : '',
+                        "telefone"                  => isset($value[6]) ? $value[6] : '',
+                        "data_sintomas"             => isset($value[7]) ? $value[7] : '',
+                        "sintomas"                  => isset($value[8]) ? $value[8] : '',
+                        "Comorbidade"               => isset($value[9]) ? $value[9] : '',
+                        "profissao"                 => isset($value[10]) ? $value[10] : '',
+                        "observaoes"                => isset($value[11]) ? $value[11] : '',
+                        "coleta"                    => isset($value[12]) ? $value[12] : '',
+                        "resultadoLaboratorial"     => isset($value[13]) ? $value[13] : '',
+                        "dataInformacaoResultado"   => isset($value[14]) ? $value[14] : '',
+                        "aconpanhamento"            => isset($value[15]) ? $value[15] : '',
+                        "data_alta"                 => isset($value[16]) ? $value[16] : '',
+                        "status"                    => isset($value[17]) ? $value[17] : '',
+                    ];
+                    $person = DB::table('people')->where('person_name', $dados['nome'])->get();
                     if (count($person) == 0) {
+
                         if ($dados['endereco']) {
                             $end = explode(', ', $dados['endereco']);
 
@@ -131,19 +131,25 @@ class CsvController extends Controller
                             'work_status' => 1,
                             'patient' => 1,
                             'person_status' => $dados['status'] ? $this->validaStatus($dados['status']) : 0,
-                            'first_medical_care' => $dados['data_sintomas'] ? date('Y-m-d H:i:s', strtotime($dados['data_sintomas'])) : null,
+                            'first_medical_care' => $dados['data_sintomas'] ? $dados['data_sintomas'] : null,
                             'address_id' => $addressId,
                             'user_id' => Auth::user()->id,
                         ];
 
-                        $person = Person::create($all);
+                        $per = Person::create($all);
 
-                        $this->attendance($dados, $person);
+                        $this->attendance($dados, $per);
+
+                    } else {
+                        $status = $this->validaStatus($dados['status']);
+                        if ($person[0]->person_status != $status){
+                           $this->attendance($dados, $person[0]);
+                            Person::where('person_name', $dados['nome'])
+                                ->update(['person_status' => $status]);
+                        }
                     }
                 }
             }
-
-
             DB::commit();
             toastr()->success('Dados Salvo com Sucesso :)');
             return redirect('/admin/person');
@@ -171,6 +177,8 @@ class CsvController extends Controller
                 return 2;
             case 'confirmado - TR':
                 return 2;
+            case 'Aguardando':
+                return 3;
             default:
                 return 4;
         }
@@ -199,10 +207,10 @@ class CsvController extends Controller
     protected function attendance($dados, $person)
     {
         $atte = [
-            'date' => $dados['data'] ? date('Y-m-d H:i:s', strtotime($dados['data'])) : null,
+            'date' => $dados['data'] ? $dados['data'] : null,
             'exam_result' => $dados['resultadoLaboratorial'] ? $this->validaExm($dados['resultadoLaboratorial']) : 4,
             'status_attendance' => $dados['status'] ? $this->validaStatus($dados['status']) : 0,
-            'discharge_date' =>  $dados['data_alta'] ? date('Y-m-d H:i:s', strtotime($dados['data_alta'])) : null,
+            'discharge_date' =>  $dados['data_alta'] ? $dados['data_alta'] : null,
             'person_id' => $person->id,
         ];
 

@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('index');
 });
 Route::get('/chart', function () {
-    return view('charts');
+    return view('pages/chart/index');
 });
 
 
