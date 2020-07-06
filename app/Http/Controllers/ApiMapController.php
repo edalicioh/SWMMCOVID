@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\CollectionLocation;
+use App\Models\District;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -120,6 +121,77 @@ class ApiMapController extends Controller
     {
         $co =  CollectionLocation::all();
         dd($co);
+    }
+
+    public function getChartDistrict()
+    {
+        $districts = District::all();
+        $d =[];
+        foreach ($districts as $key => $district) {
+            $people = DB::table('people')
+                ->join('addresses', 'people.address_id', '=', 'addresses.id')
+                ->leftJoin('districts' , 'addresses.district_id' ,'=' ,'districts.id')
+                ->where('districts.id' , '=' , $district->id)
+                ->where('excluded' ,'=' , null)
+                ->select('person_status' , 'districts.*')
+                ->get();
+            $d[] = $this->groupByDistrict($people);
+        }
+        return json_encode($d);
+    }
+
+    protected function groupByDistrict ($people)
+    {
+
+        foreach ($people->groupBy('district_coordinates') as $key => $value) {
+            $tipo = $this->getQuantidade($value , $value[0]->district_name);
+
+        }
+        return $tipo;
+
+    }
+
+    public function getQuantidade($people, $name)
+    {
+        $tipo['name'] = $name ;
+        foreach ($people->groupBy('person_status') as $key => $value) {
+            $tipo[$key] =  $this->quantidadePositivo( $key, $value);
+
+        }
+        return $tipo;
+    }
+
+    public function getByGender($gender)
+    {
+        $people = DB::table('people')
+            ->where('gender' ,'=' , $gender)
+            ->where('excluded' ,'=' , null)
+            ->select('person_status' , 'gender')
+            ->get();
+
+        $tipo = [] ;
+        $positivo = 0;
+        $recuperado = 0;
+
+        foreach ($people->groupBy('person_status') as $key => $value) {
+            if ( $key == 5) {
+                $recuperado += count($value);
+            }
+            if ( $key > 1 &&  $key != 7) {
+                $positivo += count($value);
+            }
+
+        };
+        return json_encode([
+            [
+                'name' => 'positivo',
+                'value' => $positivo,
+            ],
+            [
+                'name' => 'recuperado',
+                'value' => $recuperado
+            ]
+        ]);
     }
 
 }

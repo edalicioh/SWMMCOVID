@@ -66,5 +66,9 @@ Route::prefix('api')->group( function() {
 
     Route::get('collection', 'ApiMapController@getCollection');
 
+    Route::get('chart/district', 'ApiMapController@getChartDistrict' );
+    Route::get('chart/gender/{gender}', 'ApiMapController@getByGender' );
+
+
 
 });
