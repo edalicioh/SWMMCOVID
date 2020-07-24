@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
 		email => r.bw@hotmail.com
 		senha => juliana
 
-        */
+
         $users = [
             [
                 'user_name' => 'Edalicio Heinzen',
@@ -84,7 +84,15 @@ class UserSeeder extends Seeder
                 'companies_id' =>  DB::table('companies')->pluck('id')[0]
             ],
         ];
-
+ */
+        $users = [
+            [
+                'user_name' => 'gerente',
+                'email' => 'gerente@g.com',
+                'password' => bcrypt('admin'),
+                'companies_id' =>  2
+            ],
+        ];
         User::insert( $users);
     }
 }

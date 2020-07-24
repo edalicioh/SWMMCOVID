@@ -20,7 +20,7 @@ Auth::routes();
 /**
  * Rotas de admin
  */
-Route::prefix('admin')->middleware('auth')->group( function() {
+Route::prefix('admin')->middleware(['auth' , 'auth.type' ])->group( function() {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('person' , 'PersonController');
     Route::resource('address', 'AddressController');
@@ -54,6 +54,10 @@ Route::prefix('admin')->middleware('auth')->group( function() {
 
 });
 
+Route::prefix('company')->middleware(['auth' ])->group( function() {
+    Route::get('home', 'HomeController@index')->name('company.index');
+}) ;
+
 /**
  * Rotas de api
  */
@@ -68,7 +72,6 @@ Route::prefix('api')->group( function() {
 
     Route::get('chart/district', 'ApiMapController@getChartDistrict' );
     Route::get('chart/gender/{gender}', 'ApiMapController@getByGender' );
-
-
+    Route::get('chart/age/gender' , 'ApiMapController@getAgeByGender' );
 
 });

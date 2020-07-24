@@ -32,7 +32,6 @@ class PersonController extends Controller
     public function index(Request $request)
     {
 
-
         if ($request->ajax()) {
 
             $people = DB::table('people')

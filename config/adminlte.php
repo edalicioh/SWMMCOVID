@@ -209,10 +209,15 @@ return [
 
     'menu' => [
 
-        ['header' => 'Dados dos Pacientes'],
+        [
+            'header' => 'Dados dos Pacientes',
+            'can' => 'admin',
+        ],
         [
             'text'    => 'Pessoas',
             'icon'    => 'fas fa-fw fa-users mr-2',
+            'can' => 'admin',
+
             'submenu' => [
                 [
                     'text' => 'Consultar',
@@ -226,10 +231,11 @@ return [
                 ],
             ],
         ],
-        ['header' => 'Dados dos Hospitais'],
+        ['header' => 'Dados dos Hospitais' , 'can' => 'admin',],
         [
             'text'    => 'Hospital',
             'icon'    => 'fas fa-fw fa-hospital-alt mr-2',
+            'can' => 'admin',
             'submenu' => [
                 [
                     'text' => 'Lista',
@@ -243,7 +249,7 @@ return [
                 ],
             ],
         ],
-        ['header' => 'Questionário de Atendimento'],
+        ['header' => 'Questionário'],
         [
             'text' => 'Adicionar Perguntas',
             'url'  => '/admin/question',
@@ -268,6 +274,13 @@ return [
             'text' => 'Adicionar',
             'url'  => 'admin/csv/create',
             'icon'    => 'fas fa-fw fa-address-book  mr-2',
+        ],
+        ['header' => ''],
+        [
+            'text' => 'company',
+            'url'  => 'admin/csv/create',
+            'icon'    => 'fas fa-fw fa-address-book  mr-2',
+            'can' => 'company',
         ],
 
     ],

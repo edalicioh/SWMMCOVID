@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\CollectionLocation;
 use App\Models\District;
+use App\Models\Person;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -185,13 +186,133 @@ class ApiMapController extends Controller
         return json_encode([
             [
                 'name' => 'positivo',
-                'value' => $positivo,
+                'value' => $positivo -  $recuperado ,
             ],
             [
                 'name' => 'recuperado',
                 'value' => $recuperado
             ]
         ]);
+    }
+
+    public function getAgeByGender()
+    {
+        $masc = Person::where('excluded' ,'=' , null)->where('gender' ,'=' , 'M')->get();
+        $fem = Person::where('excluded' ,'=' , null)->where('gender' ,'=' , 'F')->get();
+
+        $totalM = count( $masc);
+        $totalF = count( $fem);
+
+
+        $positivoM = $this->countByStatusFromGender($masc);
+        $positivoF = $this->countByStatusFromGender($fem);
+
+        $percentageF = $this->percentageByAge($positivoF , $totalF);
+        $percentageM = $this->percentageByAge($positivoM , $totalM);
+        $saida = [];
+        foreach ($percentageF as $key => $value) {
+            $age = "";
+                if ($key ==  'mais60' ){
+                    $age = "+60";
+                } else if ($key ==  'mais40' ){
+                    $age = "60-40";
+                } else if ($key ==  'mais30' ){
+                    $age = "40-30";
+                } else if ($key ==  'mais20' ){
+                    $age = "30-20";
+                } else if ($key ==  'mais10' ){
+                    $age = "20-10";
+                } else if ($key ==  'menos10'){
+                    $age = "-10";
+                }
+            $saida[] = [
+                "age" => $age,
+                "male" => -$percentageM[$key] ,
+                "female" => $percentageF[$key]
+            ];
+        }
+        return json_encode($saida);
+
+    }
+
+    protected function countByStatusFromGender($gender)
+    {
+        $mais60 = 0;
+        $mais40 = 0;
+        $mais30 = 0;
+        $mais20 = 0;
+        $mais10 = 0;
+        $menos10 = 0;
+        $gruop = [];
+        foreach ($gender->groupBy("person_status") as $key => $value) {
+            if ( $key > 1 &&  $key != 7) {
+                $gruop[$key] = $this->countByAgeFrom($value);
+            }
+        }
+        foreach ($gruop as $key => $value) {
+
+            $mais60  +=  $value['mais60'];
+            $mais40  +=  $value['mais40'];
+            $mais30  +=  $value['mais30'];
+            $mais20  +=  $value['mais20'];
+            $mais10  +=  $value['mais10'];
+            $menos10 +=  $value['menos10'];
+
+
+        }
+
+        return [
+            "mais60" => $mais60,
+            "mais40" => $mais40,
+            "mais30" => $mais30,
+            "mais20" => $mais20,
+            "mais10" => $mais10,
+            "menos10" => $menos10,
+        ];
+    }
+
+    protected function countByAgeFrom($gender)
+    {
+        $mais60 = 0;
+        $mais40 = 0;
+        $mais30 = 0;
+        $mais20 = 0;
+        $mais10 = 0;
+        $menos10 = 0;
+        foreach ($gender as $Qkey => $Qvalue) {
+
+            $age = $Qvalue->age;
+            if ($age >= 60 ) {
+                $mais60++;
+            } else if ($age < 60 && $age >= 40 ) {
+                $mais40++;
+            } else if ($age < 40 && $age >= 30 ) {
+                $mais30++;
+            } else if ($age < 30 && $age >= 20 ) {
+                $mais20++;
+            } else if ($age < 20 && $age >= 10 ) {
+                $mais10++;
+            } else {
+                $menos10++;
+            }
+        }
+        return [
+            "mais60" => $mais60,
+            "mais40" => $mais40,
+            "mais30" => $mais30,
+            "mais20" => $mais20,
+            "mais10" => $mais10,
+            "menos10" => $menos10,
+        ];
+    }
+
+    protected function percentageByAge($gender , $total)
+    {
+        $saida = [];
+        foreach ($gender as $key => $value) {
+            $saida[$key] = round(( (  $value / $total ) * 100 ) , 2);
+        }
+        return $saida;
     }
 
 }
