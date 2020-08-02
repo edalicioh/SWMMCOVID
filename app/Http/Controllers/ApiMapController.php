@@ -143,7 +143,7 @@ class ApiMapController extends Controller
 
     protected function groupByDistrict ($people)
     {
-
+        $tipo = '';
         foreach ($people->groupBy('district_coordinates') as $key => $value) {
             $tipo = $this->getQuantidade($value , $value[0]->district_name);
 

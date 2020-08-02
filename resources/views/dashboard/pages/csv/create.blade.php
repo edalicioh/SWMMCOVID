@@ -11,7 +11,7 @@
     @csrf
     <div class="card card-primary">
 
-        <input type="file" class="form-control-file" id="csv_file" name="csv_file" accept=".csv" >
+        <input type="file" class="form-control-file" id="csv_file" name="csv_file"  >
 
           </div>
           <div class="card-footer">

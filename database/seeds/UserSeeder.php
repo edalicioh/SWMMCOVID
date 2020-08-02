@@ -87,10 +87,10 @@ class UserSeeder extends Seeder
  */
         $users = [
             [
-                'user_name' => 'gerente',
-                'email' => 'gerente@g.com',
+                'user_name' => 'Edalicio Heinzen',
+                'email' => 'edalicio@outlook.com',
                 'password' => bcrypt('admin'),
-                'companies_id' =>  2
+                'companies_id' =>  DB::table('companies')->pluck('id')[0]
             ],
         ];
         User::insert( $users);

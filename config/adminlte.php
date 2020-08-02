@@ -268,19 +268,22 @@ return [
             'url'  => 'admin/address/create',
             'icon'    => 'fas fa-fw fa-map-marked-alt mr-2',
         ],
-
-        ['header' => ''],
         [
             'text' => 'Adicionar',
             'url'  => 'admin/csv/create',
             'icon'    => 'fas fa-fw fa-address-book  mr-2',
         ],
-        ['header' => ''],
         [
             'text' => 'company',
             'url'  => 'admin/csv/create',
             'icon'    => 'fas fa-fw fa-address-book  mr-2',
             'can' => 'company',
+        ],
+        [
+            'text' => 'Adicionar Usuario',
+            'url'  => '#',
+            'icon'    => 'fas fa-fw fa-address-book  mr-2',
+            'can' => 'admin',
         ],
 
     ],

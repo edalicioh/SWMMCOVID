@@ -14,9 +14,9 @@ class CompaniesSeeder extends Seeder
     public function run()
     {
        Company::create([
-        'company_type'=> 2 ,
+        'company_type'=> 0 ,
         'cnpj'=> '000' ,
-        'company_name'=> 'Empresa',
+        'company_name'=> 'admin',
         'address_id'=> DB::table('addresses')->pluck('id')[0],
        ]);
     }

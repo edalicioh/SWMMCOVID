@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use SimpleXLSX;
 
 class CsvController extends Controller
 {
@@ -33,12 +34,21 @@ class CsvController extends Controller
         try {
             DB::beginTransaction();
             $file = $request->file('csv_file');
-            $path = $file->getRealPath();
-            $data = array_map('str_getcsv', file($path));
 
-            //dd($data[0]);
 
-            foreach ($data as $key => $value) {
+            if ( $xlsx = SimpleXLSX::parse( $file  )) {
+                $header_values = $rows = [];
+                foreach ( $xlsx->rows() as $k => $r ) {
+                    if ( $k === 0 ) {
+                        $header_values = $r;
+
+                        continue;
+                    }
+                    $rows[] = array_combine( $header_values, $r );
+                }
+            }
+
+            foreach ($rows as $key => $dados) {
 
                 $rua = '';
                 $numero = '';
@@ -46,29 +56,9 @@ class CsvController extends Controller
                 $bairroId = '';
                 $cidadeId = '';
                 $person = '';
-
                 if ($key > 0) {
 
-                    $dados = [
-                        "data"                      => isset($value[0]) ? $value[0] : '',
-                        "nome"                      => isset($value[1]) ? $value[1] : '',
-                        "sexo"                      => isset($value[2]) ? $value[2] : '',
-                        "idade"                     => isset($value[3]) ? $value[3] : '',
-                        "endereco"                  => isset($value[4]) ? $value[4] : '',
-                        "bairro"                    => isset($value[5]) ? $value[5] : '',
-                        "telefone"                  => isset($value[6]) ? $value[6] : '',
-                        "data_sintomas"             => isset($value[7]) ? $value[7] : '',
-                        "sintomas"                  => isset($value[8]) ? $value[8] : '',
-                        "Comorbidade"               => isset($value[9]) ? $value[9] : '',
-                        "profissao"                 => isset($value[10]) ? $value[10] : '',
-                        "observaoes"                => isset($value[11]) ? $value[11] : '',
-                        "coleta"                    => isset($value[12]) ? $value[12] : '',
-                        "resultadoLaboratorial"     => isset($value[13]) ? $value[13] : '',
-                        "dataInformacaoResultado"   => isset($value[14]) ? $value[14] : '',
-                        "aconpanhamento"            => isset($value[15]) ? $value[15] : '',
-                        "data_alta"                 => isset($value[16]) ? $value[16] : '',
-                        "status"                    => isset($value[17]) ? $value[17] : '',
-                    ];
+
                     $person = DB::table('people')->where('person_name', $dados['nome'])->get();
                     if (count($person) == 0) {
 
@@ -154,8 +144,8 @@ class CsvController extends Controller
             toastr()->success('Dados Salvo com Sucesso :)');
             return redirect('/admin/person');
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
+            dd($e);
             toastr()->error('Erro ao salvar os dados :/ ');
             return back()->withInput();
         }
@@ -208,7 +198,7 @@ class CsvController extends Controller
     {
         $atte = [
             'date' => $dados['data'] ? $dados['data'] : null,
-            'exam_result' => $dados['resultadoLaboratorial'] ? $this->validaExm($dados['resultadoLaboratorial']) : 4,
+            'exam_result' => $dados['resultado_laboratorial'] ? $this->validaExm($dados['resultado_laboratorial']) : 4,
             'status_attendance' => $dados['status'] ? $this->validaStatus($dados['status']) : 0,
             'discharge_date' =>  $dados['data_alta'] ? $dados['data_alta'] : null,
             'person_id' => $person->id,

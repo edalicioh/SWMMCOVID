@@ -18,6 +18,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "lucascudo/laravel-pt-br-localization": "^1.1",
+        "shuchkin/simplexlsx": "^0.8.18",
         "yajra/laravel-datatables-oracle": "^9.10",
         "yoeunes/toastr": "^1.2"
     },
