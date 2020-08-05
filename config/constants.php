@@ -18,10 +18,8 @@ return [
     ],
     'STATUS' => [
         0  => 'Não detectável (negativo)'  ,
-        1  => 'Positivo'    ,
-        2  => 'Tratamento Uti'      ,
-        3  => 'Tratamento Enfermaria',
-        4  => 'Tratamento Monitoramento domiciliar',
+        1  => 'Positivo',
+        4  => 'Tratamento',
         5  => 'Recuperado',
         6  => 'Óbito',
         7  => 'Aguardando Resultado',

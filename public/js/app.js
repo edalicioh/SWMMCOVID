@@ -37595,7 +37595,7 @@ axios.get("public/api/map/full").then(function (response) {
   store = [response.data.data.quantidade, cities[0].city_name];
   listInfo(response.data.data.quantidade, cities[0].city_name);
   map(response.data.data.locais);
-  OptDistrict(districts);
+  OptDistrict(districts, cities);
   addhospital();
   divLoad.style.display = "none";
 })["catch"](function (error) {
@@ -37665,10 +37665,15 @@ function addhospital() {
   });
 }
 
-function OptDistrict(districts) {
+function OptDistrict(districts, cities) {
   var html = '<option selected disabled>Buscar por Bairro</option><option value="-0" >Ver Todos</option>';
-  districts.map(function (e) {
-    html += "<option value=\"".concat(e.id, "\">").concat(e.district_name, "</option>"); //getCoordinates(e.district_name.toLowerCase(), null, e)
+  cities.map(function (city) {
+    html += "<optgroup label=\"".concat(city.city_name, "\">");
+    districts.map(function (e) {
+      if (e.city_id === city.id) {
+        html += "<option value=\"".concat(e.id, "\">").concat(e.district_name, "</option>");
+      }
+    });
   });
   document.getElementById("select-search").innerHTML = html;
 }
@@ -37678,9 +37683,7 @@ function listInfo(infos, name) {
   document.getElementById("recuperado").innerHTML = 0;
   document.getElementById("obito").innerHTML = 0;
   document.getElementById("positivo").innerHTML = 0;
-  document.getElementById("uti").innerHTML = 0;
-  document.getElementById("enfermaria").innerHTML = 0;
-  document.getElementById("domiciliar").innerHTML = 0;
+  document.getElementById("tratamento").innerHTML = 0;
   infos.map(function (e) {
     switch (e.tipo) {
       case "Recuperado":
@@ -37695,18 +37698,8 @@ function listInfo(infos, name) {
         document.getElementById("positivo").innerHTML = e.quantidade;
         break;
 
-      case "Tratamento Uti":
-        document.getElementById("uti").innerHTML = e.quantidade;
-        tratamento += e.quantidade;
-        break;
-
-      case "Tratamento Monitoramento domiciliar":
-        document.getElementById("domiciliar").innerHTML = e.quantidade;
-        tratamento += e.quantidade;
-        break;
-
-      case "Tratamento Enfermaria":
-        document.getElementById("enfermaria").innerHTML = e.quantidade;
+      case "Tratamento":
+        document.getElementById("tratamento").innerHTML = e.quantidade;
         tratamento += e.quantidade;
         break;
     }
@@ -37856,8 +37849,8 @@ exports.dados = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/covid-serve/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/covid-serve/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/edalicio/covid-serve/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/edalicio/covid-serve/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

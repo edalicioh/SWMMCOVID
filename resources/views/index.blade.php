@@ -24,7 +24,7 @@
     </form>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item ml-3 li-graf" >
-            <a class=" btn btn-success px-2 shadow-lg  rounded graf"  href="{{ url('/public/chart') }}" >Graficos do Covid-19</a>
+            <a class=" btn btn-success px-2 shadow-lg  rounded graf"  href="{{ url('/public/chart') }}" >Gráficos do Covid-19</a>
         </li>
         @auth
         <li class="nav-item ml-3">

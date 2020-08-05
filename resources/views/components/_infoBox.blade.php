@@ -30,29 +30,12 @@
                         0
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-10 border-right rounded font-weight-bolder text-white" >
-                        <div class="row rounded " style="background: #BF3646 ; font-size: 1.5rem;  ">
-                            <div class="col">
-                                <i class="fas fa-virus"></i> Em tratamento
-                            </div>
-                        </div>
-                        <div class="row mt-1   "  >
-                            <div class="col-3 rounded  mr-1 " style="background: #BF3646 ; font-size: .8rem; padding-right: 0px; padding-left: 0px; ">
-                                <div class="text-center" id="uti"   style="font-size: 1rem" >0</div>
-                                <div class="text-center">UTI</div>
-                            </div>
-                            <div class="col rounded  " style="background: #BF3646 ; font-size: .8rem; padding-right: 0px; padding-left: 0px;  ">
-                                <div class="text-center " id="enfermaria"   style="font-size: 1rem">0</div>
-                                <div class="text-center">Enfermaria</div>
-                            </div>
-                            <div class="col rounded  ml-1 " style="background: #BF3646 ; font-size: .8rem; padding-right: 0px; padding-left: 0px; ">
-                                <div class="text-center" id="domiciliar"    style="font-size: 1rem" >0</div>
-                                <div class="text-center">Domiciliar</div>
-                            </div>
-                        </div>
+
+                <div class="row my-1">
+                    <div class="col-10 border-right rounded font-weight-bolder text-white info-label"  style="background: #BF3646 ; ">
+                        <i class="fas fa-virus mr-2"></i> Em tratamento
                     </div>
-                    <div class="col-2 text-center border-left rounded font-weight-bolder text-white info-count" id="tratamento" style="background: #BF3646 ;color: #fff;" >
+                    <div class="col-2 text-center border-left rounded font-weight-bolder text-white info-count" id="tratamento" style="background: #BF3646 ; ">
                         0
                     </div>
                 </div>

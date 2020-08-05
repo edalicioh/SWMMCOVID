@@ -15,9 +15,17 @@
 
           </div>
           <div class="card-footer">
-            <button type="submit" class="btn btn-primary float-right">Salvar</button>
+            <button type="submit" id="save-sheet" class="btn btn-primary float-right">Salvar</button>
           </div>
       </div>
 </form>
+@stop
+
+@section('js')
+<script>  
+  document.querySelector("#save-sheet").addEventListener('click',e => {
+    document.querySelector("#save-sheet").innerHTML = `<i class="fas fa-spinner fa-spin  fa-fw" style=" font-size: 2rem; "></i>`;
+  })
+</script>
 @stop
 

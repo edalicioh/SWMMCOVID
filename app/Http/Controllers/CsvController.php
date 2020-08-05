@@ -58,8 +58,13 @@ class CsvController extends Controller
                 $person = '';
                 if ($key > 0) {
 
+                    $dados['idade'] = $dados['idade'] ? : 0;
 
-                    $person = DB::table('people')->where('person_name', $dados['nome'])->get();
+                    $person = DB::table('people')->where([
+                        ['person_name', $dados['nome'] ], 
+                        ["age" ,  $dados['idade'] ]
+                    ])->get();
+                    
                     if (count($person) == 0) {
 
                         if ($dados['endereco']) {
@@ -179,16 +184,20 @@ class CsvController extends Controller
         switch ($status) {
             case 'isolamento':
                 return 4;
+
             case 'alta':
                 return 5;
+
             case 'óbito':
                 return 6;
+
             case 'Óbito':
                 return 6;
+
             case 'uti':
-                return 2;
+                return 4;
             case 'enfermaria':
-                return 3;
+                return 4;
             default:
                 return 0;
         }

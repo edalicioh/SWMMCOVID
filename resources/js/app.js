@@ -69,7 +69,7 @@ axios
         listInfo(response.data.data.quantidade, cities[0].city_name);
 
         map(response.data.data.locais);
-        OptDistrict(districts);
+        OptDistrict(districts,cities);
         addhospital();
         divLoad.style.display = "none";
     })
@@ -148,14 +148,18 @@ function addhospital() {
     });
 }
 
-function OptDistrict(districts) {
+function OptDistrict(districts,cities) {
     let html =
         '<option selected disabled>Buscar por Bairro</option><option value="-0" >Ver Todos</option>';
-
-    districts.map(e => {
-        html += `<option value="${e.id}">${e.district_name}</option>`;
-        //getCoordinates(e.district_name.toLowerCase(), null, e)
-    });
+        cities.map(city => {
+            html += `<optgroup label="${city.city_name}">`
+            districts.map(e => {
+                if (e.city_id === city.id) {
+                    html += `<option value="${e.id}">${e.district_name}</option>`;
+                }
+            });
+        })
+   
     document.getElementById("select-search").innerHTML = html;
 }
 
@@ -164,9 +168,7 @@ function listInfo(infos, name) {
     document.getElementById("recuperado").innerHTML = 0;
     document.getElementById("obito").innerHTML = 0;
     document.getElementById("positivo").innerHTML = 0;
-    document.getElementById("uti").innerHTML = 0;
-    document.getElementById("enfermaria").innerHTML = 0;
-    document.getElementById("domiciliar").innerHTML = 0;
+    document.getElementById("tratamento").innerHTML = 0;
     infos.map(e => {
         switch (e.tipo) {
             case "Recuperado":
@@ -180,20 +182,12 @@ function listInfo(infos, name) {
                 document.getElementById("positivo").innerHTML = e.quantidade;
                 break;
 
-            case "Tratamento Uti":
-                document.getElementById("uti").innerHTML = e.quantidade;
+
+            case "Tratamento":
+                document.getElementById("tratamento").innerHTML = e.quantidade;
                 tratamento += e.quantidade;
                 break;
 
-            case "Tratamento Monitoramento domiciliar":
-                document.getElementById("domiciliar").innerHTML = e.quantidade;
-                tratamento += e.quantidade;
-                break;
-
-            case "Tratamento Enfermaria":
-                document.getElementById("enfermaria").innerHTML = e.quantidade;
-                tratamento += e.quantidade;
-                break;
         }
     });
 

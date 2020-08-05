@@ -32,6 +32,7 @@ class ApiMapController extends Controller
             ->get();
 
         $districts = DB::table('districts')->get();
+        
         $cities = DB::table('cities')->get();
 
         if(!$people || !$districts || !$cities ){
@@ -185,11 +186,11 @@ class ApiMapController extends Controller
         };
         return json_encode([
             [
-                'name' => 'positivo',
+                'name' => 'Tratamento',
                 'value' => $positivo -  $recuperado ,
             ],
             [
-                'name' => 'recuperado',
+                'name' => 'Recuperado',
                 'value' => $recuperado
             ]
         ]);
