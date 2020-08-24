@@ -51,7 +51,9 @@ return [
         4 => 'USB / UPA',
         5 => 'Secretaria da Saúde',
         1 => 'Lar',
-    ]
+    ],
+
+    'populacao_camboriu' => 82.989,
 ];
 
 

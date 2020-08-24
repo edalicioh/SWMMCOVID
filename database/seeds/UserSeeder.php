@@ -13,38 +13,14 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        /*
 
-                nome  => Cleonice
-                email => cleonice.beppler@ifc.edu.br
-                senha => cleonice,
-
-                nome  => Adelson
-                email => adelsonbc@gmail.com
-                senha => adelson,
-
-                nome  => Amanda Thais da Costa
-                email => amandathais@gmail.com
-                senha => amanda,
-
-                nome  => Núbia Cantalixto de Melo Alves
-                email => cantalixto@gmail.com
-                senha => cantalixto,
-
-                nome  => Margarete Cadore
-                email => margaretecadore@gmail.com
-                senha => margarete,
-
-		nome => Juliana Chayanne de Oliveira
-		email => r.bw@hotmail.com
-		senha => juliana
 
 
         $users = [
             [
                 'user_name' => 'Edalicio Heinzen',
                 'email' => 'edalicio@outlook.com',
-                'password' => bcrypt('edalicio'),
+                'password' => bcrypt('admin'),
                 'companies_id' =>  DB::table('companies')->pluck('id')[0]
             ],
             [
@@ -83,16 +59,15 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('margarete'),
                 'companies_id' =>  DB::table('companies')->pluck('id')[0]
             ],
-        ];
- */
-        $users = [
             [
-                'user_name' => 'Edalicio Heinzen',
-                'email' => 'edalicio@outlook.com',
-                'password' => bcrypt('admin'),
+                'user_name' => 'Patricia Ferraz',
+                'email' => 'patriciaferraz96@homail.com',
+                'password' => bcrypt('patriciaferraz'),
                 'companies_id' =>  DB::table('companies')->pluck('id')[0]
             ],
         ];
+
+
         User::insert( $users);
     }
 }

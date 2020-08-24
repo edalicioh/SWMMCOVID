@@ -23,8 +23,10 @@ class StoreUpdade extends FormRequest
      */
     public function rules()
     {
+        $id = $this->segment(4);
         return [
-            'street'                => 'required|min:3',
+            'cpf'                   => "unique:people,cpf,{$id},id",
+          /*   'street'                => 'required|min:3',
             'number'                => 'required',
             'state_id'              => 'required',
             'city_id'               => 'required',
@@ -32,12 +34,11 @@ class StoreUpdade extends FormRequest
 
             'name'                  => 'required|min:3',
             'gender'                => 'required',
-            'cpf'                   => 'required|min:11',
-            'phone'                 => 'required|min:11',
+             'phone'                 => 'required|min:11',
             'age'                   => 'required',
             'work_status'           => 'required',
             'status'                => 'required',
-            'first_medical_care'    => 'required',
+            'first_medical_care'    => 'required', */
         ];
     }
 }

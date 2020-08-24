@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Exam extends Model
 {
+    public $timestamps = false;
     protected $fillable = [
          'collection_date', 'result_date',  'exam_status', 'person_id' , 'collection_id'
     ];

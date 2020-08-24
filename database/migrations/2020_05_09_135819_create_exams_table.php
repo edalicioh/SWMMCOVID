@@ -15,18 +15,14 @@ class CreateExamsTable extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('collection_date');
-            $table->date('result_date');
-            $table->integer('exam_status')->comment(
-                'não infectado => 0
-                não conclusivo => 2
-                infectado => 3'
-            );
+            $table->dateTime('collection_date')->nullable();
+            $table->date('result_date')->nullable();
+            $table->integer('exam_status')->nullable();
 
             $table->unsignedBigInteger('person_id');
             $table->foreign('person_id')->references('id')->on('people');
 
-            $table->unsignedBigInteger('collection_id');
+            $table->unsignedBigInteger('collection_id')->nullable();
             $table->foreign('collection_id')->references('id')->on('collection_locations');
         });
     }

@@ -11,12 +11,13 @@ let districts = "";
 let camboriu;
 
 let store;
-let myLayer;
 
 axios
     .get("public/api/map/full")
     .then(function (response) {
         cities = response.data.cities;
+
+        console.log(cities);
         districts = response.data.districts;
         camboriu = cities[0].city_coordinates.split(",");
         const { quantidade } = response.data.data;
@@ -69,6 +70,8 @@ axios
         listInfo(response.data.data.quantidade, cities[0].city_name);
 
         map(response.data.data.locais);
+
+        console.log("<- <-");
         OptDistrict(districts,cities);
         addhospital();
         divLoad.style.display = "none";
@@ -149,6 +152,7 @@ function addhospital() {
 }
 
 function OptDistrict(districts,cities) {
+    console.log('da->');
     let html =
         '<option selected disabled>Buscar por Bairro</option><option value="-0" >Ver Todos</option>';
         cities.map(city => {
@@ -159,7 +163,7 @@ function OptDistrict(districts,cities) {
                 }
             });
         })
-   
+
     document.getElementById("select-search").innerHTML = html;
 }
 

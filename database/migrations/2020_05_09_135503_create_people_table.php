@@ -23,22 +23,10 @@ class CreatePeopleTable extends Migration
             $table->dateTime('birth_date')->nullable(true);
             $table->integer('age')->nullable(true);
             $table->boolean('excluded')->nullable(true);
-            $table->integer('work_status')->comment('
-                funcionário público => 0
-                setor médico => 1
-                setor privado => 2
-                autónomos =>3
-                outros => 4'
-            )->nullable(true);
+            $table->integer('work_status')->nullable(true);
 
-            $table->integer('person_status')->comment('
-                Monitorada  => 0,
-                Positiva    => 1,
-                Curada      => 2,
-                Óbito       => 3,
-                Tratamento  => 4,
-            '
-            )->nullable(true);
+            $table->integer('person_status')->nullable(true);
+            $table->date('date_death')->nullable();
 
             $table->boolean('patient')->nullable(true);
             $table->dateTime('first_medical_care')->nullable(true);

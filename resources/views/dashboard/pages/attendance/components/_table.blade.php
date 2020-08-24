@@ -34,6 +34,10 @@
 <?php
     function validateExam($exam)
     {
-        return Config::get('constants.ATTENDANCES')[$exam];
+
+        if ( $exam  ) {
+            return  Config::get('constants.ATTENDANCES')[$exam];
+        }
+        return "-";
     }
 ?>

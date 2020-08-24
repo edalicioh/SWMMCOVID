@@ -28,7 +28,7 @@
         #chartdiv3 {
             width: 100%;
             height: 70vh;
-            
+
         }
 
         #chartdiv4 {
@@ -36,6 +36,19 @@
             height: 70vh;
         }
         #chartdiv5 {
+            width: 100%;
+            height: 70vh;
+        }
+        #chartdiv6 {
+            width: 100%;
+            height: 70vh;
+        }
+
+        #chartdiv7 {
+            width: 100%;
+            height: 70vh;
+        }
+        #chartdiv8 {
             width: 100%;
             height: 70vh;
         }
@@ -207,7 +220,7 @@
                 <div class="container">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0 text-dark"> Top Navigation <small>Example 3.0</small></h1>
+                            <h1 class="m-0 text-dark">Pirâmide Etária</h1>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
@@ -236,6 +249,116 @@
             <!-- /.content -->
         </div>
 
+
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">MÉDIA MÓVEL SOMATÓRIO MORTES ÚLTIMOS 14 DIAS</h1>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div id="chartdiv6"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+
+
+
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Intensidade da DISSEMINAÇÃO ocorrência na população</h1>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div id="chartdiv7"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+
+
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">Letalidade e Mortalidade</h1>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div id="chartdiv8"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+
+
         <footer class="main-footer">
             <strong>Copyright &copy; 2020 <a href="http://www.camboriu.ifc.edu.br">IFC - Campus Camboriú</a>.</strong>
         </footer>
@@ -249,6 +372,7 @@
         <script src="https://www.amcharts.com/lib/4/core.js"></script>
         <script src="https://www.amcharts.com/lib/4/charts.js"></script>
         <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+        <script src="https://www.amcharts.com/lib/4/lang/pt_BR.js"></script>
 
         <script>
 
@@ -459,7 +583,7 @@
 
                                 var iconPath = "m 384.977,276.115 c -0.33,-0.902 -33.149,-90.694 -47.603,-132.749 -9.325,-27.136 -24.962,-40.895 -46.474,-40.895 -29.934,0 -39.899,0 -69.8,0 -21.512,0 -37.149,13.759 -46.474,40.895 -14.452,42.055 -47.272,131.848 -47.603,132.749 -3.812,10.425 1.549,21.968 11.975,25.779 10.425,3.812 21.968,-1.551 25.779,-11.975 0.273,-0.748 22.776,-62.314 38.824,-107.645 1.435,4.712 4.37,8.758 8.233,11.627 l 0.048,29.451 -34.573,87.18 c -1.885,4.755 0.875,10.067 5.834,11.259 5.161,1.24 11.996,2.93 19.41,4.782 V 487.88 c 0,13.321 10.799,24.12 24.12,24.12 13.321,0 24.12,-10.799 24.12,-24.12 V 337.975 c 3.464,0.307 6.948,0.305 10.413,-0.006 V 487.88 c 0,13.321 10.799,24.12 24.12,24.12 13.321,0 24.12,-10.799 24.12,-24.12 V 326.551 c 7.407,-1.852 14.236,-3.538 19.398,-4.776 4.924,-1.18 7.731,-6.492 5.84,-11.261 l -34.567,-87.163 0.048,-29.451 c 3.864,-2.868 6.797,-6.914 8.233,-11.627 16.047,45.331 38.551,106.897 38.824,107.645 3.812,10.426 15.354,15.787 25.779,11.975 10.427,-3.81 15.788,-15.353 11.976,-25.778 z M 299.898,43.897999 A 43.897999,43.897999 0 0 1 256,87.795998 43.897999,43.897999 0 0 1 212.102,43.897999 43.897999,43.897999 0 0 1 256,0 43.897999,43.897999 0 0 1 299.898,43.897999 Z"
 
-                                var chart = am4core.create("chartdiv4", am4charts.SlicedChart);                              
+                                var chart = am4core.create("chartdiv4", am4charts.SlicedChart);
 
                                 chart.data = data;
 
@@ -562,6 +686,130 @@
 
                     })
                 })
+
+        fetch("../public/api/chart/deadMM")
+            .then(function(response){
+                response.json().then(function(data){
+                    var chart = am4core.create("chartdiv6", am4charts.XYChart);
+                    chart.data = data;
+
+                    // Create axes
+                    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+
+                    categoryAxis.dataFields.category = "data";
+                    categoryAxis.title.text = "Data";
+
+                    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                    valueAxis.title.text = "Media Movel";
+
+                    // Create series
+                    var series = chart.series.push(new am4charts.ColumnSeries());
+                    series.dataFields.valueY = "quantidade";
+                    series.dataFields.categoryX = "data";
+                    series.name = "Sales";
+                    series.columns.template.tooltipText = "Data: {categoryX}\nMortos: {valueY}";
+                    series.columns.template.fill = am4core.color("#104547");
+
+                    var series2 = chart.series.push(new am4charts.LineSeries());
+                    series2.name = "Media";
+                    series2.stroke = am4core.color("#CDA2AB");
+                    series2.strokeWidth = 3;
+                    series2.dataFields.valueY = "media";
+                    series2.dataFields.categoryX = "data";
+                })
+            })
+
+        fetch("../public/api/chart/propagation")
+            .then(function(response){
+                response.json().then(function(data){
+                    var chart = am4core.create("chartdiv7", am4charts.XYChart);
+                    chart.data = data;
+                    // Create axes
+                    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+
+                    categoryAxis.dataFields.category = "data";
+                    categoryAxis.title.text = "Data";
+
+                    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                    valueAxis.title.text = "Media Movel";
+
+                    // Create series
+                    var series = chart.series.push(new am4charts.ColumnSeries());
+                    series.dataFields.valueY = "quantidade";
+                    series.dataFields.categoryX = "data";
+                    series.name = "Sales";
+                    series.columns.template.tooltipText = "Data: {categoryX}\nPositivos: {valueY}";
+                    series.columns.template.fill = am4core.color("#104547");
+
+                    var series2 = chart.series.push(new am4charts.LineSeries());
+                    series2.name = "Media";
+                    series2.stroke = am4core.color("#CDA2AB");
+                    series2.strokeWidth = 3;
+                    series2.dataFields.valueY = "media";
+                    series2.dataFields.categoryX = "data";
+                })
+            })
+
+
+        fetch("../public/api/chart/letalidade")
+            .then(function(response){
+                response.json().then(function(data){
+                    am4core.ready(function() {
+                    var chart = am4core.create("chartdiv8", am4charts.XYChart);
+                    chart.paddingRight = 20;
+
+                    chart.data = data;
+
+                    chart.language.locale = am4lang_pt_BR;
+                    chart.dateFormatter.language = new am4core.Language();
+                    chart.dateFormatter.language.locale = am4lang_pt_BR;
+
+                    // Create axes
+                    var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+                    dateAxis.renderer.grid.template.location = 0;
+                    dateAxis.renderer.minGridDistance = 50;
+
+                    var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+                    // Create series
+                    var series = chart.series.push(new am4charts.LineSeries());
+                    series.dataFields.valueY = "letalidate";
+                    series.dataFields.dateX = "date";
+                    series.tensionX = 0.8;
+                    series.strokeWidth = 3;
+                    series.name = "Letalidade";
+
+                    var series2 = chart.series.push(new am4charts.LineSeries());
+                    series2.dataFields.valueY = "mortalidate";
+                    series2.dataFields.dateX = "date";
+                    series2.tensionX = 0.8;
+                    series2.strokeWidth = 3;
+                    series2.name = "Mortalidade";
+
+                    // Add cursor
+                    chart.cursor = new am4charts.XYCursor();
+                    chart.cursor.fullWidthLineX = true;
+                    chart.cursor.xAxis = dateAxis;
+                    chart.cursor.lineX.strokeWidth = 0;
+                    chart.cursor.lineX.fill = am4core.color("#000");
+                    chart.cursor.lineX.fillOpacity = 0.1;
+
+                    // Add scrollbar
+                    chart.scrollbarX = new am4core.Scrollbar();
+
+                    // Fix axis scale on load
+                    chart.events.on("ready", function(ev) {
+                    valueAxis.min = valueAxis.minZoomed;
+                    valueAxis.max = valueAxis.maxZoomed;
+                    });
+
+                    // Legend
+                    chart.legend = new am4charts.Legend();
+                    });
+
+
+                })
+            })
 
 
     </script>

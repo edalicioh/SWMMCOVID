@@ -28,6 +28,7 @@ class Person extends Model
         'company_id',
         'contaminations_id',
         'hospital_id',
+        'date_death',
         'excluded'
     ];
 

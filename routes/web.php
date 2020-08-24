@@ -49,6 +49,8 @@ Route::prefix('admin')->middleware(['auth' , 'auth.type' ])->group( function() {
 
     //Route::resource('district', 'DistrictController');
     Route::resource('csv', 'CsvController');
+    Route::get('downloadXlsx', 'ExportXlsxController@downloadXlsx')->name('downloadXlsx');
+
 
 
 
@@ -73,5 +75,11 @@ Route::prefix('api')->group( function() {
     Route::get('chart/district', 'ApiMapController@getChartDistrict' );
     Route::get('chart/gender/{gender}', 'ApiMapController@getByGender' );
     Route::get('chart/age/gender' , 'ApiMapController@getAgeByGender' );
+
+    Route::get('chart/deadMM' , 'ApiMapController@getMovingAverage' );
+    Route::get('chart/propagation' , 'ApiMapController@getPropagation' );
+    Route::get('chart/letalidade' , 'ApiMapController@getLetalidade');
+
+
 
 });

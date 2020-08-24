@@ -268,7 +268,7 @@ return [
             'url'  => 'admin/address/create',
             'icon'    => 'fas fa-fw fa-map-marked-alt mr-2',
         ],
-        [
+     /*    [
             'text' => 'Adicionar',
             'url'  => 'admin/csv/create',
             'icon'    => 'fas fa-fw fa-address-book  mr-2',
@@ -285,7 +285,7 @@ return [
             'icon'    => 'fas fa-fw fa-address-book  mr-2',
             'can' => 'admin',
         ],
-
+ */
     ],
 
     /*

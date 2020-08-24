@@ -100,6 +100,9 @@ class PersonController extends Controller
      */
     public function store(request $request)
     {
+        $request->validate([
+            'cpf' => "unique:people"
+        ]);
 
         try {
             DB::beginTransaction();

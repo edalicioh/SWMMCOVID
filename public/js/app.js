@@ -37595,6 +37595,7 @@ axios.get("public/api/map/full").then(function (response) {
   store = [response.data.data.quantidade, cities[0].city_name];
   listInfo(response.data.data.quantidade, cities[0].city_name);
   map(response.data.data.locais);
+  console.log("<- <-");
   OptDistrict(districts, cities);
   addhospital();
   divLoad.style.display = "none";
@@ -37666,6 +37667,7 @@ function addhospital() {
 }
 
 function OptDistrict(districts, cities) {
+  console.log('da->');
   var html = '<option selected disabled>Buscar por Bairro</option><option value="-0" >Ver Todos</option>';
   cities.map(function (city) {
     html += "<optgroup label=\"".concat(city.city_name, "\">");

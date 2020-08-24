@@ -7,9 +7,15 @@
 @stop
 
 @section('content')
-<div class="row">
+<div class="row ">
     <div class="col">
-        <div id="csv" class="mb-3">
+        <div  class="mb-3">
+            <a class="btn btn-secondary" id="download-xlsx" href="{{ route('downloadXlsx') }}">
+                    <span>
+                        <i class="fas fa-download"></i>
+                        Baixar Excel
+                    </span>
+                </a>
         </div>
     </div>
 </div>
@@ -60,7 +66,7 @@ var table =  $('#people-table').DataTable({
     }
 });
 
-
+/*
 new $.fn.dataTable.Buttons( table, {
     name: 'commands',
 
@@ -77,7 +83,16 @@ new $.fn.dataTable.Buttons( table, {
     ]
 });
 
-table.buttons( 0, null ).containers().appendTo( '#csv' );
+table.buttons( 0, null ).containers().appendTo( '#csv' ); */
+
+const downloadXlsx = document.querySelector("#download-xlsx")
+downloadXlsx.addEventListener('click',e => {
+    downloadXlsx.innerHTML = `<i class="fas fa-spinner fa-spin  fa-fw" style=" font-size: 2rem; "></i>`;
+    fetch("{{ route('downloadXlsx') }}")
+            .then(function(response){
+                downloadXlsx.innerHTML = `<span><i class="fas fa-download"></i> Baixar Excel </span>`;
+            })
+  })
 
 </script>
 @stop

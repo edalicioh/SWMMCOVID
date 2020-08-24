@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Attendance;
 use App\Models\District;
+use App\Models\Exam;
 use App\Models\Person;
 use App\Models\Symptom;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class CsvController extends Controller
 
 
         try {
-            DB::beginTransaction();
+
             $file = $request->file('csv_file');
 
 
@@ -47,25 +48,58 @@ class CsvController extends Controller
                     $rows[] = array_combine( $header_values, $r );
                 }
             }
-
             foreach ($rows as $key => $dados) {
-
+                DB::beginTransaction();
                 $rua = '';
                 $numero = '';
                 $ob = '';
                 $bairroId = '';
                 $cidadeId = '';
                 $person = '';
-                if ($key > 0) {
 
-                    $dados['idade'] = $dados['idade'] ? : 0;
+                $where = [];
+                $newPersona = false;
+                $updatePersona = false;
+                $dateDeath = null;
 
-                    $person = DB::table('people')->where([
-                        ['person_name', $dados['nome'] ], 
-                        ["age" ,  $dados['idade'] ]
-                    ])->get();
-                    
-                    if (count($person) == 0) {
+
+                    $dados['idade']     = $dados['idade'] && $dados['idade'] != "Não informado" && $dados['idade'] != "" ? $dados['idade']  : 0;
+                    $dados['CPF']       = $dados['CPF']  ? $dados['CPF'] : null;
+                    $dados['status']    = $dados['status'] ? $this->validaStatus($dados['status']) : 0;
+
+
+                    $where[] = ['person_name','=' ,$dados['nome'] ];
+                    $where[] = ['age','=' ,$dados['idade'] ];
+
+
+                    $person = DB::table('people')
+                        ->where($where)
+                        ->get();
+
+
+
+                    if (count($person) > 0) {
+                        if ($dados['CPF'] != '' && $person[0]->cpf == '') {
+                            Person::find($person[0]->id)->update(['cpf' => $dados['CPF']]);
+                        } else if ($dados['CPF'] == $person[0]->cpf) {
+                            $updatePersona = true;
+                        }
+                    } else {
+                        if ($dados['CPF'] != '') {
+                            $personCpf = DB::table('people')->where('cpf','=' ,$dados['CPF'] )->get();
+
+                            if (count($personCpf) == 0) {
+                                $newPersona  = true;
+                            }
+                        } else {
+                            $newPersona  = true;
+                        }
+                    }
+
+
+
+
+                    if ($newPersona) {
 
                         if ($dados['endereco']) {
                             $end = explode(', ', $dados['endereco']);
@@ -117,35 +151,56 @@ class CsvController extends Controller
                         $address->save();
                         $addressId = $address->id;
 
+                        if($dados['status']  == 6) {
+                            $dataObito = explode(' ', $dados['aconpanhamento'])[1];
+                            $data = explode('/', $dataObito);
+                            $data[] = "2020";
+                            $data  = "$data[2]-$data[1]-$data[0]";
+                            $dateDeath = date('Y-m-d H:i:s', strtotime($data));
+                        }
+
+
 
                         $all = [
                             'person_name' => $dados['nome'] ? $dados['nome'] : 'Não informado',
                             'gender' => $dados['sexo'] ? $dados['sexo'] : 'O',
                             'age' => $dados['idade'] && $dados['idade'] != "Não informado" && $dados['idade'] != "" ? intval($dados['idade']) : 0,
                             'phone' => $dados['telefone'] && $dados['telefone'] != "Não informado" ? $dados['telefone'] : null,
+                            'cpf' => $dados['CPF']  ? $dados['CPF'] : null,
                             'work_status' => 1,
                             'patient' => 1,
-                            'person_status' => $dados['status'] ? $this->validaStatus($dados['status']) : 0,
+                            'person_status' => $dados['status'] ,
                             'first_medical_care' => $dados['data_sintomas'] ? $dados['data_sintomas'] : null,
                             'address_id' => $addressId,
+                            'date_death' => $dateDeath,
                             'user_id' => Auth::user()->id,
                         ];
 
                         $per = Person::create($all);
 
                         $this->attendance($dados, $per);
+                        $this->exam($dados, $per);
 
-                    } else {
-                        $status = $this->validaStatus($dados['status']);
-                        if ($person[0]->person_status != $status){
-                           $this->attendance($dados, $person[0]);
-                            Person::where('person_name', $dados['nome'])
-                                ->update(['person_status' => $status]);
+                    }
+
+                    if ($updatePersona) {
+                        $status = '';
+                        $status = $dados['status'];
+
+                        if ($person[0]->person_status != $status && $person[0]->person_status != 6 ){
+                            
+                            $this->attendance($dados, $person[0]);
+                            $this->exam($dados, $person[0]);
+
+                            $pe = Person::find($person[0]->id);
+                            $pe->update(['person_status' => $status]);
+                            //dd($person) ;
                         }
                     }
-                }
+
+                DB::commit();
             }
-            DB::commit();
+
             toastr()->success('Dados Salvo com Sucesso :)');
             return redirect('/admin/person');
         } catch (\Exception $e) {
@@ -182,7 +237,7 @@ class CsvController extends Controller
     protected function validaStatus($status)
     {
         switch ($status) {
-            case 'isolamento':
+            case 'tratamento':
                 return 4;
 
             case 'alta':
@@ -194,10 +249,6 @@ class CsvController extends Controller
             case 'Óbito':
                 return 6;
 
-            case 'uti':
-                return 4;
-            case 'enfermaria':
-                return 4;
             default:
                 return 0;
         }
@@ -208,6 +259,7 @@ class CsvController extends Controller
         $atte = [
             'date' => $dados['data'] ? $dados['data'] : null,
             'exam_result' => $dados['resultado_laboratorial'] ? $this->validaExm($dados['resultado_laboratorial']) : 4,
+
             'status_attendance' => $dados['status'] ? $this->validaStatus($dados['status']) : 0,
             'discharge_date' =>  $dados['data_alta'] ? $dados['data_alta'] : null,
             'person_id' => $person->id,
@@ -229,5 +281,17 @@ class CsvController extends Controller
             }
         }
         $attendance->symptoms()->sync($ass);
+    }
+    public function exam($dados,$person)
+    {
+     //   'collection_date', 'result_date',  'exam_status', 'person_id' , 'collection_id'
+        $exam = [
+            'result_date' => $dados['data_resultado'] ? $dados['data_resultado'] : null,
+            'exam_status' => $dados['resultado_laboratorial'] ? $this->validaExm($dados['resultado_laboratorial']) : 4,
+            'person_id' => $person->id,
+        ];
+
+        Exam::create($exam);
+
     }
 }

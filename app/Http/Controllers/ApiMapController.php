@@ -27,12 +27,14 @@ class ApiMapController extends Controller
             ->join('addresses', 'people.address_id', '=', 'addresses.id')
             ->leftJoin('districts' , 'addresses.district_id' ,'=' ,'districts.id')
             ->where('excluded' ,'=' , null)
+            ->where('district_coordinates' ,'!=' , '')
+
+
             ->where('person_status' ,'!=' , 0)
             ->select('person_status' , 'districts.*')
             ->get();
-
         $districts = DB::table('districts')->get();
-        
+
         $cities = DB::table('cities')->get();
 
         if(!$people || !$districts || !$cities ){
@@ -314,6 +316,137 @@ class ApiMapController extends Controller
             $saida[$key] = round(( (  $value / $total ) * 100 ) , 2);
         }
         return $saida;
+    }
+
+    public function getMovingAverage ( )
+    {
+        $people = DB::table('people')
+                    ->where('excluded' ,'=' , null)
+                    ->where('person_status' ,'=' , 6)
+                    ->orderBy("date_death",'asc')
+                    ->get();
+
+        $group = $people->groupBy('date_death');
+
+        foreach ($people as $key => $value) {
+
+            $timestamp = date('Y-m-d H:i:s',date(strtotime("-14 day", strtotime($value->date_death))));
+            $total = DB::table('people')
+                            ->where('excluded' ,'=' , null)
+                            ->where('person_status' ,'=' , 6)
+                            ->where('date_death' ,'<' ,$timestamp )
+                            ->orderBy("date_death",'asc')
+                            ->get();
+
+            $MM[$value->date_death]['quantidade'] = count( $group[$value->date_death]) ;
+            $MM[$value->date_death]['media']      = round( count($total) / 14 ,2) ;
+            $MM[$value->date_death]['data']       = $value->date_death;
+        }
+        //->where('date_death' ,'>' ,  $timestamp)
+
+        $saida = [];
+
+        foreach ($MM as $key => $value) {
+            $saida[] = $value;
+        }
+        return json_encode($saida);
+    }
+
+    public function getPropagation()
+    {
+       // Número de casos novos determinado período (14dias)*100.000)/ população total
+
+       $people = DB::table('people')
+                    ->leftJoin('exams' , 'people.id' ,'=' ,'exams.person_id')
+                    ->where('excluded' ,'=' , null)
+                    ->where('person_status' ,'>' , 1)
+                    ->where('person_status' ,'!=' , 7)
+                    ->orderBy("result_date",'asc')
+                    ->get();
+
+        $group = $people->groupBy('result_date');
+        $MM = [];
+        $saida= [];
+        foreach ($group as $key => $value) {
+            if ($key != "") {
+                $timestamp = date('Y-m-d H:i:s',date(strtotime("-14 day", strtotime($key))));
+                $total = DB::table('people')
+                    ->leftJoin('exams' , 'people.id' ,'=' ,'exams.person_id')
+                    ->where('excluded' ,'=' , null)
+                    ->where('person_status' ,'=' , 6)
+                    ->where('result_date' ,'<' ,$timestamp )
+                    ->orderBy("result_date",'asc')
+                    ->get();
+                if (count($total) > 0) {
+                    $MM[$key]['quantidade'] = count( $group[$key]) ;
+                    $MM[$key]['media']      = round( (count($total) * 100.000) / Config::get('constants.populacao_camboriu') ,2) ;
+                    $MM[$key]['data']       = $key;
+                }
+            }
+        }
+        foreach ($MM as $key => $value) {
+            $saida[] = $value;
+        }
+        return json_encode($saida);
+    }
+
+    public function getLetalidade()
+    {
+        // Letalidade:  (nº mortes X 100) / nº casos
+        // Mortalidade: (nº de mortalidades X 100.000)/população total
+        $totalDia = 0;
+        $totalMorte = 0;
+        $people = DB::table('people')
+                ->leftJoin('exams' , 'people.id' ,'=' ,'exams.person_id')
+                ->where('excluded' ,'=' , null)
+                ->where('person_status' ,'>' , 1)
+                ->where('person_status' ,'!=' , 7)
+                ->orderBy("result_date",'asc')
+                ->get();
+
+        foreach ($people->groupBy('result_date') as $key => $value) {
+
+
+            $totalDia += count($value);
+
+
+            foreach ($value as  $person) {
+                if ($person->person_status == 6) {
+                    $totalMorte++;
+                }
+            }
+
+
+            $letalidate = $totalMorte > 0
+                            ? ($totalMorte * 100) / $totalDia
+                            : 0 ;
+            $mortalidate = $totalMorte > 0
+                            ? ($totalMorte * 100.000) / Config::get('constants.populacao_camboriu')
+                            : 0 ;
+
+            if ( $key ) {
+                if ($totalMorte > 0) {
+                    $MM[$key]['letalidate']   = round( $letalidate ,2) ;
+                    $MM[$key]['mortalidate']  = round( $mortalidate  ,2) ;
+                    $MM[$key]['date']         = $key;
+                    $MM[$key]['nada']         = $totalMorte;
+                    $MM[$key]['total']         = $totalDia;
+
+                }
+
+            }
+
+        }
+
+
+
+        $saida = [];
+
+        foreach ($MM as $key => $value) {
+            $saida[] = $value;
+        }
+        return json_encode($saida);
+
     }
 
 }
