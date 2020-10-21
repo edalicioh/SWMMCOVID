@@ -19,7 +19,7 @@ class AddressesSeeder extends Seeder
                 'number' => '795',
                 'observation' => "",
                 'post_code' => "",
-                'district_id' => 2,
+                'district_id' => DB::table('districts')->pluck('id')[0],
                 'city_id' => DB::table('cities')->pluck('id')[0],
                 'state_id' => DB::table('states')->pluck('id')[0],
             ],
@@ -28,4 +28,3 @@ class AddressesSeeder extends Seeder
         Address::insert($addresses);
     }
 }
-

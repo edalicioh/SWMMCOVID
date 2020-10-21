@@ -19,6 +19,13 @@
      <b>ERRO:</b> Todo os campos com asterisco ( * ) devem ser preenchidos
     </div>
     @endif
+    @if(!isset($person) )
+    <div class="row">
+        <div class="col">
+        @include('dashboard.pages.person.components._formColeta')
+        </div>
+    </div>
+    @endif
     <div class="row">
         <div class="col-md-6">
             @include('dashboard.pages.person.components._formPerson')

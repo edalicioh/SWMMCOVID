@@ -29,15 +29,15 @@ class AddressController extends Controller
     {
         $states = DB::table('states')->get();
         $cities = DB::table('cities')
-        ->join('states','cities.state_id' ,'states.id')
-        ->select('*','cities.id as cities_id')
+        ->join('states', 'cities.state_id', 'states.id')
+        ->select('*', 'cities.id as cities_id')
         ->get();
         $district = DB::table('districts')
-        ->join('cities','districts.city_id' ,'cities.id')
-        ->select('*','districts.id as district_id')
+        ->join('cities', 'districts.city_id', 'cities.id')
+        ->select('*', 'districts.id as district_id')
         ->get();
 
-        return view('dashboard/pages/address/create' , compact(['cities' , 'states' ,'district']));
+        return view('dashboard/pages/address/create', compact(['cities', 'states', 'district']));
     }
 
     /**
@@ -48,7 +48,6 @@ class AddressController extends Controller
      */
     public function store($request, $isNew = false)
     {
-
         $address = new Address();
         $address->street = $request->street;
         $address->number = $request->number;
@@ -91,13 +90,12 @@ class AddressController extends Controller
      */
     public function update(Request $request, Address $address)
     {
-
-        $address->street        = $request->street;
-        $address->number        = $request->number;
-        $address->observation   = $request->observation;
-        $address->state_id      = $request->state_id;
-        $address->city_id       = $request->city_id;
-        $address->district_id   = $request->district_id;
+        $address->street = $request->street;
+        $address->number = $request->number;
+        $address->observation = $request->observation;
+        $address->state_id = $request->state_id;
+        $address->city_id = $request->city_id;
+        $address->district_id = $request->district_id;
         $address->update();
     }
 

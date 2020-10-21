@@ -20,12 +20,13 @@
     </div>
 </div>
 <div class="pb-5">
-    <table id="people-table" class="table table-striped table-bordered "></table>
+    <table id="people-table" class="table table-striped table-bordered " ></table>
 </div>
 @stop
 
 @section('js')
 <script>
+
 
 
 
@@ -39,6 +40,16 @@ var table =  $('#people-table').DataTable({
     columns: [
         {data: 'person_name', name: 'person_name' , title: 'Nome'},
         {data: 'person_status', name: 'person_status', title: 'Status' },
+        {
+            data: 'discharge_date',
+            name: 'discharge_date',
+            title: 'Data da provavel alta',
+            render: function( data, type, row, meta){
+                console.log(data);
+                        var ThisDate = data != null ?  moment(new Date(data)).format("DD/MM/YYYY") : "-";
+                        return ThisDate
+                    }
+        },
         {data: 'district_name', name: 'district_name' , title: 'Bairro' },
         {data: 'phone', name: 'phone' , title: 'Telefone'},
 
@@ -48,15 +59,21 @@ var table =  $('#people-table').DataTable({
                 let edit = '{{ url("admin/person/id/edit") }}';
                 let show = '{{ url("admin/historic/person") }}'
                 let create = '{{ url("admin/attendance/person/create") }}'
+                const deleted = "{{ url('admin/person/') }}" + '/'+row.person_id
+
+
 
                 edit = edit.replace('/id/', '/'+row.person_id+'/');
                 show = show.replace('person', row.person_id);
                 create = create.replace('person', row.person_id);
 
                 return `
-                    <a href="${edit}" class="btn btn-xs btn-info"> <i class="fa fa-edit"></i> Editar</a>
-                    <a href="${show}" class="btn btn-xs btn-primary"> <i class="fas fa-notes-medical"></i> Historico</a>
-                    <a href="${create}" class="btn btn-xs btn-secondary"> <i class="fas fa-plus"></i> Atendimento</a>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="${edit}" class="btn btn-xs btn-info "> <i class="fa fa-edit"></i></a>
+                    <a href="${show}" class="btn btn-xs btn-primary ml-1"> <i class="fas fa-notes-medical"></i> </a>
+                    <a href="${create}" class="btn btn-xs btn-secondary ml-1"> <i class="fas fa-plus"></i></a>
+                    <a href="#" class="btn btn-xs btn-danger delete-person ml-1" data-id="${row.person_id}" data-token="{{ csrf_token() }}"> <i class="fas fa-trash"></i> </a>
+                </div>
                 ` ;
             }
         }
@@ -65,6 +82,27 @@ var table =  $('#people-table').DataTable({
             "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
     }
 });
+
+
+$('body').on('click','.delete-person', function (e) {
+    e.preventDefault();
+    var id = $(this).data("id");
+    var token = $(this).data("token");
+    $.ajax({
+        type: "DELETE",
+        url: 'person/'+id,
+        data: {
+                "id": id,
+                "_method": 'DELETE',
+                "_token": token,
+            },
+        success: function (response) {
+            window.location = '{{ url("/admin/person") }}'
+        }
+    });
+});
+
+
 
 /*
 new $.fn.dataTable.Buttons( table, {
@@ -86,13 +124,16 @@ new $.fn.dataTable.Buttons( table, {
 table.buttons( 0, null ).containers().appendTo( '#csv' ); */
 
 const downloadXlsx = document.querySelector("#download-xlsx")
+
 downloadXlsx.addEventListener('click',e => {
     downloadXlsx.innerHTML = `<i class="fas fa-spinner fa-spin  fa-fw" style=" font-size: 2rem; "></i>`;
+
     fetch("{{ route('downloadXlsx') }}")
-            .then(function(response){
-                downloadXlsx.innerHTML = `<span><i class="fas fa-download"></i> Baixar Excel </span>`;
-            })
-  })
+        .then(function(response){
+            downloadXlsx.innerHTML = `<span><i class="fas fa-download"></i> Baixar Excel </span>`;
+        })
+})
+
 
 </script>
 @stop

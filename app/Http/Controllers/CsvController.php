@@ -188,7 +188,7 @@ class CsvController extends Controller
                         $status = $dados['status'];
 
                         if ($person[0]->person_status != $status && $person[0]->person_status != 6 ){
-                            
+
                             $this->attendance($dados, $person[0]);
                             $this->exam($dados, $person[0]);
 
@@ -294,4 +294,5 @@ class CsvController extends Controller
         Exam::create($exam);
 
     }
+
 }

@@ -37553,9 +37553,9 @@ var cities = "";
 var districts = "";
 var camboriu;
 var store;
-var myLayer;
 axios.get("public/api/map/full").then(function (response) {
   cities = response.data.cities;
+  console.log(cities);
   districts = response.data.districts;
   camboriu = cities[0].city_coordinates.split(",");
   var quantidade = response.data.data.quantidade;

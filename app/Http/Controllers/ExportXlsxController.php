@@ -84,7 +84,7 @@ class ExportXlsxController extends Controller
                 'sintomas'      => $this->getSymptoms($value->aid),
                 'comorbidade'   => $this->getDiseases($value->aid),
                 'observaoes'    => $value->annotations,
-                'resultado_laboratorial'    => $this->validateExam($value->exam_result),
+                'resultado_laboratorial'    => $this->validateExam($value->exam_result? : 4),
                 'status'        => $this->validateStatus($value->person_status),
             ];
         }

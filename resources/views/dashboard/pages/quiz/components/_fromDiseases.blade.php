@@ -1,8 +1,9 @@
 <div class="card card-info card-outline">
     <div class="card-body">
         <h2 class="text-center">Adicionar Condição de Risco</h2>
-        <form action="{{ route('disease.store') }} " method="POST">
+        <form id="form-disease" action="{{ route('disease.store') }} " method="POST">
             @csrf
+            <div id="put-disease"></div>
 
             <div class="form-group">
                 <label for="disease_description" class="required">Condição</label>

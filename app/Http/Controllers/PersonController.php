@@ -37,8 +37,8 @@ class PersonController extends Controller
             $people = DB::table('people')
                 ->join('addresses', 'people.address_id', '=', 'addresses.id')
                 ->join('attendances', 'people.id', '=', 'attendances.person_id')
-                ->join('districts', 'addresses.district_id', '=', 'districts.id')
-                ->select('person_name', 'person_status', 'district_name', 'phone', 'person_id')
+                ->leftJoin('districts' , 'addresses.district_id' ,'=' ,'districts.id')
+                ->select('person_name', 'person_status', 'district_name', 'phone', 'person_id','discharge_date')
                 ->where('excluded' ,'=' , null)
                 ->get()->groupBy('person_id');
             foreach ($people as $key => $value) {
@@ -47,7 +47,8 @@ class PersonController extends Controller
                     'district_name'         => $value[0]->district_name,
                     'phone'                 => $value[0]->phone,
                     'person_id'             => $value[0]->person_id,
-                    'person_status'         => $this->validaStatus($value[0]->person_status)
+                    'person_status'         => $this->validaStatus($value[0]->person_status),
+                    'discharge_date'        => $value[0]->discharge_date
                 ];
             }
             return DataTables::of($people)->make(true);
@@ -101,7 +102,7 @@ class PersonController extends Controller
     public function store(request $request)
     {
         $request->validate([
-            'cpf' => "unique:people"
+            'cpf' => "unique:people|nullable"
         ]);
 
         try {
@@ -262,7 +263,10 @@ class PersonController extends Controller
      */
     public function destroy(Person $person)
     {
-        dd($person);
+        $person->excluded = 1;
+        $person->update();
+        toastr()->success('Excluido com Sucesso :)');
+        return json_encode(true);
     }
 
     protected function validaStatus($status)

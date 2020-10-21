@@ -25,7 +25,6 @@ class DiseaseController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -39,8 +38,8 @@ class DiseaseController extends Controller
         try {
             DB::beginTransaction();
 
-            $disease =  new Disease();
-            $disease->disease_description =  $request->disease_description;
+            $disease = new Disease();
+            $disease->disease_description = $request->disease_description;
             $disease->save();
 
             DB::commit();
@@ -84,7 +83,15 @@ class DiseaseController extends Controller
      */
     public function update(Request $request, Disease $disease)
     {
-        //
+        try {
+            $disease->disease_description = $request->disease_description;
+            $disease->update();
+            toastr()->success('Dados Salvo com Sucesso :)');
+            return back();
+        } catch (\Exception $e) {
+            toastr()->error('Erro ao salvar os dados :/ ');
+            return back();
+        }
     }
 
     /**
