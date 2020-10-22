@@ -231,7 +231,7 @@ return [
                 ],
             ],
         ],
-        ['header' => 'Dados dos Hospitais' , 'can' => 'admin',],
+        ['header' => 'Dados dos Hospitais', 'can' => 'admin',],
         [
             'text'    => 'Hospital',
             'icon'    => 'fas fa-fw fa-hospital-alt mr-2',
@@ -274,19 +274,19 @@ return [
             'icon'    => 'fas fa-fw fa-address-book  mr-2',
             'can' => 'company',
         ],
-        [
-               'text' => 'Adicionar',
-               'url'  => 'admin/csv/create',
-               'icon'    => 'fas fa-fw fa-address-book  mr-2',
-           ],
-                /*
-        [
-            'text' => 'Adicionar Usuario',
-            'url'  => '#',
+        /*    [
+            'text' => 'Adicionar',
+            'url'  => 'admin/csv/create',
             'icon'    => 'fas fa-fw fa-address-book  mr-2',
-            'can' => 'admin',
+        ], */
+        ['header' => ''],
+        [
+            'text' => 'Usuário',
+            'url'  => '/admin/users',
+            'icon'    => 'fas fa-fw fa-address-book  mr-2',
+
         ],
- */
+
     ],
 
     /*

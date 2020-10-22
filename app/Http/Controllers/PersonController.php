@@ -37,9 +37,9 @@ class PersonController extends Controller
             $people = DB::table('people')
                 ->join('addresses', 'people.address_id', '=', 'addresses.id')
                 ->join('attendances', 'people.id', '=', 'attendances.person_id')
-                ->leftJoin('districts' , 'addresses.district_id' ,'=' ,'districts.id')
-                ->select('person_name', 'person_status', 'district_name', 'phone', 'person_id','discharge_date')
-                ->where('excluded' ,'=' , null)
+                ->leftJoin('districts', 'addresses.district_id', '=', 'districts.id')
+                ->select('person_name', 'person_status', 'district_name', 'phone', 'person_id', 'discharge_date')
+                ->where('excluded', '=', null)
                 ->get()->groupBy('person_id');
             foreach ($people as $key => $value) {
                 $people[$key] = [

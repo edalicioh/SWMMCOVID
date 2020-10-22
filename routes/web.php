@@ -54,11 +54,15 @@ Route::prefix('admin')->middleware(['auth', 'auth.type'])->group(function () {
     //Route::resource('district', 'DistrictController');
     Route::resource('csv', 'CsvController');
     Route::get('downloadXlsx', 'ExportXlsxController@downloadXlsx')->name('downloadXlsx');
+
+
+
+    Route::resource('users', 'UserController');
 });
 
 Route::prefix('company')->middleware(['auth'])->group(function () {
     Route::get('home', 'HomeController@index')->name('company.index');
-}) ;
+});
 
 /**
  * Rotas de api
