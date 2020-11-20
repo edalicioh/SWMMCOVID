@@ -12,9 +12,10 @@
 <p> O sistema desenvolvido pelo IFC campus Camboriú tem por finalidade  obter o controle com mais eficácia sobre a Pandemia do Covid-19. Diante da situação completamente desconhecida que nos encontramos criou-se a necessidade desta ferramenta.</p>
 
 
-## **Tecnologia aplicada neste sistema**
+## **Tecnologias utilizadas neste sistema**
 
-* PHP
+* PHP 
+* Mysql
 * Framework Laravel
 * Javascript
 * Leaflet
@@ -23,11 +24,11 @@
   
 ## **Pré Requisito**
 
-* Computador
-* PHP instalado
-* Composer instalado
-* Node instalado
-* Filezilla instalado
+* PHP >= 3.5+  (INFORMAR A VERSÕES)
+* Composer >= 3.5+
+* Node >= 3.5+  
+* Mysql >= X.x+
+* Filezilla instalado (ACHO QUE NÃO PRECISA COLOCAR)
   
 ## **Utilização**
 
