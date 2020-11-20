@@ -22,7 +22,7 @@
 * OpenStreetMap
 * CSS/SCSS
   
-## **Pré Requisito**
+## **Requirementos**
 
 * PHP >= 3.5+  (INFORMAR A VERSÕES)
 * Composer >= 3.5+
@@ -30,7 +30,7 @@
 * Mysql >= X.x+
 * Filezilla instalado (ACHO QUE NÃO PRECISA COLOCAR)
   
-## **Utilização**
+## **Instalação**
 
 1. Para utilização deste sistema
 	- Deve posuir um servidor PHP
