@@ -3,13 +3,14 @@
 
 
 
-# Sistema web de controle de **COVID-19**
+# Sistema web municipal de monitoramento de COVID-19 - SWMMCOVID
 
 
 ## **Sobre**
 
 
-<p> O sistema desenvolvido pelo IFC campus Camboriú tem por finalidade  obter o controle com mais eficácia sobre a Pandemia do Covid-19. Diante da situação completamente desconhecida que nos encontramos criou-se a necessidade desta ferramenta.</p>
+<p> Sistema desenvolvido por alunos e professores do IFC campus Camboriú com objetivo de MONITORAR e RASTREAR casos de Covid-19 a nível municipal diagnosticando a presença e evolução por bairros da pandemia. Esta pode ser uma ferramenta de gestão pública para tomada de decisões na área da saúde, educação, assistência social, etc.
+</p>
 
 
 ## **Tecnologias utilizadas neste sistema**
