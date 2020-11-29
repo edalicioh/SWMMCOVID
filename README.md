@@ -25,11 +25,10 @@
   
 ## **Requirementos**
 
-* PHP >= 3.5+  (INFORMAR A VERSÕES)
-* Composer >= 3.5+
-* Node >= 3.5+  
-* Mysql >= X.x+
-* Filezilla instalado (ACHO QUE NÃO PRECISA COLOCAR)
+* PHP = ^7.2.5
+* Composer = ^1.10
+* Node = ^12  
+* Mysql = ^8.0
   
 ## **Instalação**
 
