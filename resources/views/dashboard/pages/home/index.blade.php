@@ -4,74 +4,24 @@
 
 @section('title', 'Dashboard')
 
-@section('content_header')
-<h1>Dashboard</h1>
-@stop
+
 
 @section('content')
-@include('dashboard.pages.home.components._infoBox')
-@include('dashboard.pages.home.components._chart')
+<p align="center"><a href="http://www.camboriu.ifc.edu.br/" target="_blank"><img src="../img/logoIFC.png" width="400"></a></p>
 
+
+
+<h2 class="text-center my-5 ">Sistema web municipal de monitoramento de COVID-19 - SWMMCOVID</h2>
+
+<div class="px-5">
+
+    <h3>Sobre</h3>
+
+
+    <p>
+        Sistema desenvolvido por alunos e professores do IFC campus Camboriú com objetivo de MONITORAR e RASTREAR casos de Covid-19 a nível municipal diagnosticando a presença e evolução por bairros da pandemia. Esta pode ser uma ferramenta de gestão pública para tomada de decisões na área da saúde, educação, assistência social, etc.
+    </p>
+    <p align="center"><a href="http://www.camboriu.ifc.edu.br/" target="_blank"><img src="../img/banner-social.png" height="130"></a></p>
+</div>
 @stop
 
-
-@section('js')
-<script>
-var ctx = document.getElementById('myChart');
-
-var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-            {
-                label: '# of Votes',
-                fill: false,
-                backgroundColor: '#00f',
-				borderColor: '#00f',
-                data: [12, 19, 3, 5, 2, 3],
-
-            }, 
-            {
-                label: '# oss Votes',
-                fill: false,
-                backgroundColor: '#f00',
-				borderColor: '#f00',
-                data: [11, 15, 13, 5, 12, 3],
-            }
-        ]
-    },
-    options: {
-				responsive: true,
-				title: {
-					display: true,
-					text: 'Chart.js Line Chart'
-				},
-				tooltips: {
-					mode: 'index',
-					intersect: false,
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: true
-				},
-				scales: {
-					xAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Month'
-						}
-					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						}
-					}]
-				}
-			}
-});
-</script>
-@stop
